@@ -11,7 +11,7 @@ var dgram = require('dgram');
 var os = require('os');
 
 // create the adapter object
-var adapter = utils.Adapter('kecontact');
+var adapter = utils.Adapter('kecontactAK');
 
 var DEFAULT_UDP_PORT = 7090;
 var BROADCAST_UDP_PORT = 7092;
@@ -64,25 +64,25 @@ adapter.on('unload', function (callback) {
         if (pollTimer) {
             clearInterval(pollTimer);
         }
-        
+
         if (sendDelayTimer) {
             clearInterval(sendDelayTimer);
         }
-        
+
         disableTimer();
-        
+
         if (txSocket) {
             txSocket.close();
         }
-        
+
         if (rxSocketReports) {
             rxSocketReports.close();
         }
-        
+
         if (rxSocketBrodacast) {
             rxSocketBrodacast.close();
         }
-        
+
         if (adapter.config.stateRegard)
         	adapter.unsubscribeForeignStates(adapter.config.stateRegard);
         if (adapter.config.stateSurplus)
@@ -117,19 +117,19 @@ adapter.on('stateChange', function (id, state) {
     		if (state.val != getStateInternal(id))
     			setTimeout(checkWallboxPower, 3000);  // wait 3 seconds after vehicle is plugged
     	}
-    } 
+    }
     var oldValue = getStateInternal(id);
     setStateInternal(id, state.val);
-    
+
     if (state.ack) {
         return;
     }
-    
+
     if (!stateChangeListeners.hasOwnProperty(id)) {
         adapter.log.error('Unsupported state change: ' + id);
         return;
     }
-    
+
     stateChangeListeners[id](oldValue, state.val);
 });
 
@@ -143,9 +143,9 @@ function main() {
     	adapter.log.error('start of adapter not possible due to config errors');
     	return;
     }
-    
+
     txSocket = dgram.createSocket('udp4');
-    
+
     rxSocketReports = dgram.createSocket('udp4');
     rxSocketReports.on('listening', function () {
         var address = rxSocketReports.address();
@@ -153,7 +153,7 @@ function main() {
     });
     rxSocketReports.on('message', handleWallboxMessage);
     rxSocketReports.bind(DEFAULT_UDP_PORT, '0.0.0.0');
-    
+
     rxSocketBrodacast = dgram.createSocket('udp4');
     rxSocketBrodacast.on('listening', function () {
         rxSocketBrodacast.setBroadcast(true);
@@ -163,7 +163,7 @@ function main() {
     });
     rxSocketBrodacast.on('message', handleWallboxBroadcast);
     rxSocketBrodacast.bind(BROADCAST_UDP_PORT, '0.0.0.0');
-    
+
     adapter.getForeignObject('system.config', function(err, ioBroker_Settings) {
     	if (err) {
     		adapter.log.error('Error while fetching system.config: ' + err);
@@ -178,14 +178,14 @@ function main() {
     		ioBrokerLanguage = 'en';
     	}
     });
-    
+
     adapter.getStatesOf(function (err, data) {
         for (var i = 0; i < data.length; i++) {
             if (data[i].native && data[i].native.udpKey) {
                 states[data[i].native.udpKey] = data[i];
             }
         }
-        // save all state value into internal store 
+        // save all state value into internal store
     	adapter.getStates('*', function (err, obj) {
     		if (err) {
     			adapter.log.error('error reading states: ' + err);
@@ -213,7 +213,7 @@ function main() {
 
 function start() {
     adapter.subscribeStates('*');
-    
+
     stateChangeListeners[adapter.namespace + '.enableUser'] = function (oldValue, newValue) {
         sendUdpDatagram('ena ' + (newValue ? 1 : 0), true);
     };
@@ -333,7 +333,7 @@ function handleWallboxMessage(message, remote) {
         if (msg.length === 0) {
             return;
         }
-        
+
         if (msg.startsWith('TCH-OK')) {
             //adapter.log.info('Received ' + message);
             restartPollTimer(); // reset the timer so we don't send requests too often
@@ -364,7 +364,7 @@ function handleWallboxBroadcast(message, remote) {
     try {
         restartPollTimer(); // reset the timer so we don't send requests too often
         requestReports();
-        
+
         var msg = message.toString().trim();
         handleMessage(JSON.parse(msg));
     } catch (e) {
@@ -400,7 +400,7 @@ function regulateWallbox(milliAmpere) {
 }
 
 function getSurplusWithoutWallbox() {
-	return getStateDefault0(adapter.config.stateSurplus) 
+	return getStateDefault0(adapter.config.stateSurplus)
 	     - getStateDefault0(adapter.config.stateRegard)
 	     + (getStateDefault0(stateWallboxPower) / 1000);
 }
@@ -470,7 +470,7 @@ function displayChargeMode() {
 
 function checkWallboxPower() {
     // 0 unplugged
-    // 1 plugged on charging station 
+    // 1 plugged on charging station
     // 3 plugged on charging station plug locked
     // 5 plugged on charging station             plugged on EV
     // 7 plugged on charging station plug locked plugged on EV
@@ -491,12 +491,12 @@ function checkWallboxPower() {
 		setStateAck(stateLastChargeAmount, getStateInternal(stateWallboxChargeAmount) / 1000);
 		setStateAck(statePlugTimestamp, null);
 		setStateAck(stateChargeTimestamp, null);
-	} 
-	
+	}
+
     var curr    = 0;      // in mA
     var tempMax = getMaxCurrent();
 	var phases  = getChargingPhaseCount();
-	
+
     // "repair" state: VIS boolean control sets value to 0/1 instead of false/true
     if (typeof getStateInternal(statePvAutomatic) != "boolean") {
         setStateAck(statePvAutomatic, getStateInternal(statePvAutomatic) == 1);
@@ -504,7 +504,7 @@ function checkWallboxPower() {
 
 	adapter.log.debug('Available surplus: ' + getSurplusWithoutWallbox());
 	adapter.log.debug('Available max power: ' + getTotalPowerAvailable());
-	
+
     // first of all check maximum power allowed
 	if (maxPowerActive) {
 		 // Always calculate with three phases for safety reasons
@@ -513,7 +513,7 @@ function checkWallboxPower() {
 			tempMax = maxAmperage;
 		}
 	}
-	
+
 	// lock wallbox if requested or available amperage below minimum
 	if (getStateInternal(stateWallboxDisabled) || tempMax < getMinCurrent()) {
 		curr = 0;
@@ -555,7 +555,7 @@ function checkWallboxPower() {
         		adapter.log.info("wallbox is running with maximum power of " + curr + " mA");
         }
 	}
-	
+
     if (curr < getMinCurrent()) {
         // deactivate wallbox and set max power to minimum for safety reasons
         switchWallbox(false);
@@ -568,8 +568,8 @@ function checkWallboxPower() {
         regulateWallbox(curr);
         switchWallbox(true);
     }
-	
-	
+
+
 	if (isVehiclePlugged || maxPowerActive)
 		checkTimer();
 	else
@@ -584,7 +584,7 @@ function disableTimer() {
 
 function checkTimer() {
 	disableTimer();
-	autoTimer = setInterval(checkWallboxPower, 30 * 1000); 
+	autoTimer = setInterval(checkWallboxPower, 30 * 1000);
 }
 
 function requestReports() {
