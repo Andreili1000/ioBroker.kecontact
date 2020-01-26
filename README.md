@@ -28,6 +28,10 @@ This is the interval in seconds how often the wallbox should be queried for new 
 The default value is 30 seconds which is a good balance between the load for the KeConnect and having up-to-date information in ioBroker.
 
 ## Changelog
+### 0.3.0 (2020-01-26)
+* (Andreili1000) cloned version 0.2.1
+
+## Changelog
 ### 0.2.1 (2019-11-14)
 * (Sneak-L8) handle values of undefined in getStates
 * (Sneak-L8) better recognition of max power function

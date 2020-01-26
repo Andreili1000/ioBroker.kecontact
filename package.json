@@ -1,6 +1,6 @@
 {
   "name": "iobroker.kecontact",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Adapter for ioBroker that communicates with a KeContact wallbox",
   "main": "kecontact.js",
   "scripts": {
@@ -32,6 +32,10 @@
     {
       "name": "Sneak-L8",
       "email": "git@sengler.de"
+    },
+    {
+      "name": "Andreili1000",
+      "email": "60061677+Andreili1000@users.noreply.github.com"
     }
   ],
   "license": "Apache-2.0",
