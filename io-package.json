@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "kecontact",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "news": {
       "0.0.1": {
         "en": "initial commit",
@@ -26,21 +26,25 @@
       "0.2.1": {
         "en": "handle values of undefined in getStates, better recognition of max power function",
         "de": "undefined-Werte in getStates abfangen, bessere Erkennung, ob Leistungsbegrenzng gesetzt"
+      },
+      "0.3.0": {
+        "en": "added RFID authorization function",
+        "de": "Ansteuerung der RFID Funktion"
       }
     },
     "title": "KEBA KeContact Adapter",
     "titleLang": {
       "en": "KEBA KeContact Adapter",
-      "de": "KEBA KeContact-Adapter",
-      "ru": "Драйвер для KEBA KeContact"
+      "de": "KEBA KeContact-Adapter"
     },
     "desc": {
-      "en": "Communicates with a KEBA KeContact wallbox.",
-      "de": "Kommuniziert mit einer KEBA KeContact Ladestation."
+      "en": "Communicates with a KEBA KeContact wallbox with RFID reader.",
+      "de": "Kommuniziert mit einer KEBA KeContact Ladestation mit RFID Funktion."
     },
     "authors": [
       "UncleSamSwiss <samuel.weibel@gmail.com>",
-      "Sneak-L8 <git@sengler.de>"
+      "Sneak-L8 <git@sengler.de>",
+      "Andreili1000 <60061677+Andreili1000@users.noreply.github.com>"
     ],
     "license": "Apache 2.0",
     "platform": "Javascript/Node.js",
@@ -55,7 +59,8 @@
       "KEBA",
       "wallbox",
       "emobility",
-      "e-mobility"
+      "e-mobility",
+      "RFID"
     ],
     "icon": "charger.png",
     "extIcon": "https://raw.githubusercontent.com/UncleSamSwiss/ioBroker.kecontact/master/admin/charger.png"
@@ -526,7 +531,51 @@
         "read": true,
         "write": true,
         "desc": "Message to display on wallbox for a certain (short) time (max. 23 characters)"
+      },
+      "native": {}
+    },
+    {
+      "_id": "authon",
+      "type": "state",
+      "common": {
+        "name": "Authorization Function",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "desc": "Authorization Function (0=deactivated)"
+      },
+      "native": {
+        "udpKey": "AuthON"
       }
+    },
+    {
+      "_id": "authreq",
+      "type": "state",
+      "common": {
+        "name": "Authorization Request",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": false,
+        "desc": "Authorization via RFID (0=not required or already performed)"
+      },
+      "native": {
+        "udpKey": "Authreq"
+      }
+    },
+    {
+      "_id": "rfid",
+      "type": "state",
+      "common": {
+        "name": "RFID Tag",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "desc": "ID of RFID tag to be used for authorization "
+      },
+      "native": {}
     },
     {
       "_id": "automatic",

@@ -226,6 +226,9 @@ function start() {
     stateChangeListeners[adapter.namespace + '.display'] = function (oldValue, newValue) {
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
     };
+    stateChangeListeners[adapter.namespace + '.rfid'] = function (oldValue, newValue) {
+        sendUdpDatagram('start ' + parseInt(newValue), true);
+    };
     stateChangeListeners[adapter.namespace + '.' + stateWallboxDisabled] = function (oldValue, newValue) {
         adapter.log.info('change pause status of wallbox from ' + oldValue + ' to ' + newValue);
       	checkWallboxPower();

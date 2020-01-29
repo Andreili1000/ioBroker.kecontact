@@ -29,7 +29,7 @@ The default value is 30 seconds which is a good balance between the load for the
 
 ## Changelog
 ### 0.3.0 (2020-01-26)
-* (Andreili1000) cloned version 0.2.1
+* (Andreili1000) added RFID authorization function
 
 ## Changelog
 ### 0.2.1 (2019-11-14)
