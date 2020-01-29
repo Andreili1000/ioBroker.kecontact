@@ -14,7 +14,8 @@ var os = require('os');
 var adapter = utils.Adapter('kecontact');
 
 var DEFAULT_UDP_PORT = 7090;
-var BROADCAST_UDP_PORT = 7092;
+// broadcast was 7092
+var BROADCAST_UDP_PORT = 7091;
 
 var txSocket;
 var rxSocketReports;
