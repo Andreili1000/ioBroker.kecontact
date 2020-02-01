@@ -30,7 +30,7 @@
       "0.3.0": {
         "en": "RFID authorization function",
         "de": "Ansteuerung der RFID Funktion"
-      }
+      },
       "0.3.1": {
         "en": "session report function",
         "de": "Auslesen der Session Reports"
@@ -860,6 +860,5 @@
       },
       "native": {"udpKey": "RFID class"}
     }
-
   ]
 }
