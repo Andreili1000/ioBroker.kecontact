@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "kecontact",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
       "0.0.1": {
         "en": "initial commit",
@@ -710,19 +710,6 @@
       "native": {"udpKey": "Session ID"}
     },
     {
-      "_id": "session_currHW",
-      "type": "state",
-      "common": {
-        "name": "maximum current of this session",
-        "type": "number",
-        "role": "value",
-        "read": true,
-        "write": false,
-        "desc": "maximum current in mA"
-      },
-      "native": {"udpKey": "Curr HW"}
-    },
-    {
       "_id": "session_estart",
       "type": "state",
       "common": {
@@ -734,19 +721,6 @@
         "desc": "total energy consumption at session start in mW"
       },
       "native": {"udpKey": "E start"}
-    },
-    {
-      "_id": "session_estart",
-      "type": "state",
-      "common": {
-        "name": "last Energy",
-        "type": "number",
-        "role": "value",
-        "read": true,
-        "write": false,
-        "desc": "total energy consumption at current time/session end in mW"
-      },
-      "native": {"udpKey": "E pres"}
     },
     {
       "_id": "session_starttime",
@@ -780,7 +754,7 @@
       "common": {
         "name": "timestamp of session start",
         "type": "string",
-        "role": "datetime",
+        "role": "value",
         "read": true,
         "write": false,
         "desc": "Date/Timestamp at session start"
@@ -793,7 +767,7 @@
       "common": {
         "name": "timestamp of session end",
         "type": "string",
-        "role": "datetime",
+        "role": "value",
         "read": true,
         "write": false,
         "desc": "Date/Timestamp at session end"
