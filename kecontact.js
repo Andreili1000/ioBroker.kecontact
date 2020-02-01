@@ -225,6 +225,7 @@ function start() {
         sendUdpDatagram('output ' + (newValue ? 1 : 0), true);
     };
     stateChangeListeners[adapter.namespace + '.display'] = function (oldValue, newValue) {
+        adapter.log.info('display ' + newValue.replace(/ /g, "$"));
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
     };
     stateChangeListeners[adapter.namespace + '.rfid'] = function (oldValue, newValue) {
@@ -595,6 +596,7 @@ function checkTimer() {
 function requestReports() {
     sendUdpDatagram('report 2');
     sendUdpDatagram('report 3');
+    sendUdpDatagram('report 101');
 }
 
 function restartPollTimer() {

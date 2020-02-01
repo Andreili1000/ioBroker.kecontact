@@ -28,8 +28,12 @@
         "de": "undefined-Werte in getStates abfangen, bessere Erkennung, ob Leistungsbegrenzng gesetzt"
       },
       "0.3.0": {
-        "en": "added RFID authorization function",
+        "en": "RFID authorization function",
         "de": "Ansteuerung der RFID Funktion"
+      }
+      "0.3.1": {
+        "en": "session report function",
+        "de": "Auslesen der Session Reports"
       }
     },
     "title": "KEBA KeContact",
@@ -691,6 +695,171 @@
         "desc": "amount of kWh of last charging process"
       },
       "native": {}
+    },
+    {
+      "_id": "session",
+      "type": "channel",
+      "common": {
+        "name": "session report"
+      },
+      "native": {}
+    },
+    {
+      "_id": "session.sessionID",
+      "type": "state",
+      "common": {
+        "name": "ID of the charging session",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "ID of the recorderd charging session"
+      },
+      "native": {"udpKey": "Session ID"}
+    },
+    {
+      "_id": "session.currHW",
+      "type": "state",
+      "common": {
+        "name": "maximum current of this session",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "maximum current in mA"
+      },
+      "native": {"udpKey": "Curr HW"}
+    },
+    {
+      "_id": "session.estart",
+      "type": "state",
+      "common": {
+        "name": "Energy at session start",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "total energy consumption at session start in mW"
+      },
+      "native": {"udpKey": "E start"}
+    },
+    {
+      "_id": "session.estart",
+      "type": "state",
+      "common": {
+        "name": "last Energy",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "total energy consumption at current time/session end in mW"
+      },
+      "native": {"udpKey": "E pres"}
+    },
+    {
+      "_id": "session.starttime",
+      "type": "state",
+      "common": {
+        "name": "session start time",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "systemclock at session start in s"
+      },
+      "native": {"udpKey": "started[s]"}
+    },
+    {
+      "_id": "session.endtime",
+      "type": "state",
+      "common": {
+        "name": "session end time",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "systemclock at session end in s"
+      },
+      "native": {"udpKey": "ended[s]"}
+    },
+    {
+      "_id": "session.start",
+      "type": "state",
+      "common": {
+        "name": "timestamp of session start",
+        "type": "string",
+        "role": "datetime",
+        "read": true,
+        "write": false,
+        "desc": "Date/Timestamp at session start"
+      },
+      "native": {"udpKey": "started"}
+    },
+    {
+      "_id": "session.end",
+      "type": "state",
+      "common": {
+        "name": "timestamp of session end",
+        "type": "string",
+        "role": "datetime",
+        "read": true,
+        "write": false,
+        "desc": "Date/Timestamp at session end"
+      },
+      "native": {"udpKey": "ended"}
+    },
+    {
+      "_id": "session.reason",
+      "type": "state",
+      "common": {
+        "name": "reason for session end",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "0=not ended, 1=unplugged, 10=deauthorized by RFID"
+      },
+      "native": {"udpKey": "reason"}
+    },
+    {
+      "_id": "session.timeq",
+      "type": "state",
+      "common": {
+        "name": "quality of time signal",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "0=not synced, X=strong synced, 2=weak synced"
+      },
+      "native": {"udpKey": "timeQ"}
+    },
+    {
+      "_id": "session.rfidtag",
+      "type": "state",
+      "common": {
+        "name": "RFID tag for session",
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "RFID tag used for authorizing session"
+      },
+      "native": {"udpKey": "RFID tag"}
+    },
+    {
+      "_id": "session.rfidclass",
+      "type": "state",
+      "common": {
+        "name": "class of RFID card for session",
+        "type": "string",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "class of RFID card used for authorizing session"
+      },
+      "native": {"udpKey": "RFID class"}
     }
+
   ]
 }
