@@ -835,7 +835,7 @@
       "native": {"udpKey": "timeQ"}
     },
     {
-      "_id": "session.rfidtag",
+      "_id": "rfidtag",
       "type": "state",
       "common": {
         "name": "RFID tag for session",

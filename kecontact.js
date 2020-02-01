@@ -341,7 +341,7 @@ function handleWallboxMessage(message, remote) {
         }
 
         if (msg.startsWith('TCH-OK')) {
-            //adapter.log.info('Received ' + message);
+            adapter.log.info('Received ' + message);
             restartPollTimer(); // reset the timer so we don't send requests too often
             requestReports();
             return;
