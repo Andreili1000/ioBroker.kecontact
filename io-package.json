@@ -32,7 +32,7 @@
         "de": "Ansteuerung der RFID Funktion"
       }
     },
-    "title": "KEBA KeContact Adapter",
+    "title": "KEBA KeContact",
     "titleLang": {
       "en": "KEBA KeContact Adapter",
       "de": "KEBA KeContact-Adapter"
@@ -569,8 +569,8 @@
       "type": "state",
       "common": {
         "name": "RFID Tag",
-        "type": "number",
-        "role": "value",
+        "type": "string",
+        "role": "text",
         "read": true,
         "write": true,
         "desc": "ID of RFID tag to be used for authorization "

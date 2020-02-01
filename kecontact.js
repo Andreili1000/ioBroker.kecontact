@@ -228,7 +228,8 @@ function start() {
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
     };
     stateChangeListeners[adapter.namespace + '.rfid'] = function (oldValue, newValue) {
-        sendUdpDatagram('start ' + parseInt(newValue), true);
+      adapter.log.info('try to unlock wallbox with RFID ' + newValue);
+      sendUdpDatagram('start ' + newValue, true);
     };
     stateChangeListeners[adapter.namespace + '.' + stateWallboxDisabled] = function (oldValue, newValue) {
         adapter.log.info('change pause status of wallbox from ' + oldValue + ' to ' + newValue);
