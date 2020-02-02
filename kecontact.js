@@ -618,14 +618,21 @@ function handleMessage(message) {
     for (var key in message) {
         if (states[key]) {
             try {
-                updateState(states[key], message[key]);
+                // redirect identical state naming in reports >=100 with standard reports 1-3
+                if (adapter.namespace.reportID>=100 && states[key]=="E pres"){
+                  updateState(states["Sess E pres"], message[key]);
+                } else if  (adapter.namespace.reportID>=100 && states[key]=="Curr HW"){
+                  updateState(states["Sess Curr HW"], message[key]);
+                // do normal state update without redirecting
+                } else {
+                  updateState(states[key], message[key]);
+                };
             } catch (e) {
                 adapter.log.warn("Couldn't update state " + key + ": " + e);
             }
         } else if (key != 'ID') {
             adapter.log.debug('Unknown value received: ' + key + '=' + message[key]);
         }
-
     }
 }
 

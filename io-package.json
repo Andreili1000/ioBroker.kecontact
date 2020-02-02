@@ -90,7 +90,7 @@
       "_id": "reportID",
       "type": "state",
       "common": {
-        "name": "ID of UDP report",
+        "name": "ID of received UDP report",
         "type": "number",
         "role": "value",
         "read": true,
@@ -738,6 +738,22 @@
       "native": {"udpKey": "Session ID"}
     },
     {
+      "_id": "session_currentHardware",
+      "type": "state",
+      "common": {
+        "name": "Maximum Current Hardware in session",
+        "type": "number",
+        "role": "value",
+        "unit": "mA",
+        "read": true,
+        "write": false,
+        "desc": "Highest possible charging current of the charging connection in this session."
+      },
+      "native": {
+        "udpKey": "Sess Curr HW"
+      }
+    },
+    {
       "_id": "session_estart",
       "type": "state",
       "common": {
@@ -749,6 +765,23 @@
         "desc": "total energy consumption at session start in mW"
       },
       "native": {"udpKey": "E start"}
+    },
+    {
+      "_id": "session_ePres",
+      "type": "state",
+      "common": {
+        "name": "Power Consumption in this session",
+        "type": "number",
+        "role": "value",
+        "unit": "Wh",
+        "read": true,
+        "write": false,
+        "desc": "Power consumption of the recorded loading session in Wh."
+      },
+      "native": {
+        "udpKey": "Sess E pres",
+        "udpMultiplier": 0.1
+      }
     },
     {
       "_id": "session_starttime",
