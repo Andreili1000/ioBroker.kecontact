@@ -619,6 +619,8 @@ function handleMessage(message) {
         if (states[key]) {
             try {
                 // redirect identical state naming in reports >=100 with standard reports 1-3
+                adapter.log.info("reportID " + adapter.namespace.reportID);
+                adapter.log.info("states-key " + states[key]);
                 if (adapter.namespace.reportID>=100 && states[key]=="E pres"){
                   updateState(states["Sess E pres"], message[key]);
                 } else if  (adapter.namespace.reportID>=100 && states[key]=="Curr HW"){
