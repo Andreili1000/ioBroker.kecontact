@@ -697,6 +697,19 @@
       "native": {}
     },
     {
+      "_id": "requestReportID",
+      "type": "state",
+      "common": {
+        "name": "request report from KEBA",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "desc": "requests a report with ID (100-130) from the wallbox"
+      },
+      "native": {}
+    },
+    {
       "_id": "session_sessionID",
       "type": "state",
       "common": {

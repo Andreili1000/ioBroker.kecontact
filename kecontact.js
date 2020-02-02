@@ -232,6 +232,10 @@ function start() {
       adapter.log.info('try to unlock wallbox with RFID ' + newValue);
       sendUdpDatagram('start ' + newValue, true);
     };
+    stateChangeListeners[adapter.namespace + '.requestReportID'] = function (oldValue, newValue) {
+      adapter.log.info('request report ' + newValue + 'from wallbox');
+      sendUdpDatagram('report ' + newValue, true);
+    };
     stateChangeListeners[adapter.namespace + '.' + stateWallboxDisabled] = function (oldValue, newValue) {
         adapter.log.info('change pause status of wallbox from ' + oldValue + ' to ' + newValue);
       	checkWallboxPower();
@@ -596,7 +600,7 @@ function checkTimer() {
 function requestReports() {
     sendUdpDatagram('report 2');
     sendUdpDatagram('report 3');
-    sendUdpDatagram('report 101');
+    //sendUdpDatagram('report 101');
 }
 
 function restartPollTimer() {
