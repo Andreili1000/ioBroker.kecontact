@@ -615,16 +615,23 @@ function restartPollTimer() {
 }
 
 function handleMessage(message) {
+    // stores the ID of the received message - used to redirect equal state namings in different reports
+    var ThisReportID = 1;
+    // loop through all key-value pairs of message
     for (var key in message) {
+        // first key is always ID - save it for this message
+        if (key== 'ID'){
+          ThisReportID=message[key];
+          adapter.log.info("ThisReportID=" + ThisReportID);
+        };
+        // this state exists in adapter
         if (states[key]) {
             try {
                 // redirect identical state naming in reports >=100 with standard reports 1-3
-                adapter.log.info("reportID " + getState(adapter.namespace.reportID));
-                adapter.log.info("states-key " + states[key]);
-                if (getState(adapter.namespace.reportID)>=100 && states[key]=="E pres"){
-                  updateState(states["Sess E pres"], message[key]);
-                } else if  (getState(adapter.namespace.reportID)>=100 && states[key]=="Curr HW"){
-                  updateState(states["Sess Curr HW"], message[key]);
+                if (ThisReportID>=100 && key=='E pres'){
+                  updateState(states['Sess E pres'], message[key]);
+                } else if  (ThisReportID>=100 && key=='Curr HW'){
+                  updateState(states['Sess Curr HW'], message[key]);
                 // do normal state update without redirecting
                 } else {
                   updateState(states[key], message[key]);
