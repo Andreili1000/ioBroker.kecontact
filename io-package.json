@@ -87,6 +87,20 @@
   ],
   "instanceObjects": [
     {
+      "_id": "reportID",
+      "type": "state",
+      "common": {
+        "name": "ID of UDP report",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": false,
+        "desc": "valid IDs (1,2,3,100-130)"
+      },
+      "native": {
+        "udpKey": "ID"
+      }
+    {
       "_id": "product",
       "type": "state",
       "common": {
