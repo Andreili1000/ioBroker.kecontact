@@ -584,15 +584,67 @@
       }
     },
     {
-      "_id": "rfid",
+      "_id": "rfid_master",
       "type": "state",
       "common": {
-        "name": "RFID Tag",
+        "name": "RFID Tag Master",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "ID of RFID tag to be used for authorization "
+        "desc": "RFID Tag Master"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_user1",
+      "type": "state",
+      "common": {
+        "name": "RFID Tag User1",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "RFID Tag User1"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_user2",
+      "type": "state",
+      "common": {
+        "name": "RFID Tag User2",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "RFID Tag User2"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_user3",
+      "type": "state",
+      "common": {
+        "name": "RFID Tag User3",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "RFID Tag User3"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_user4",
+      "type": "state",
+      "common": {
+        "name": "RFID Tag User4",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "RFID Tag User4"
       },
       "native": {}
     },
