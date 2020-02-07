@@ -32,6 +32,13 @@ var ioBrokerLanguage      = 'en';
 const chargeTextAutomatic = {'en': 'PV automatic active', 'de': 'PV-optimierte Ladung'};
 const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleistung'};
 
+// Whitelist of RFID IDs of Wallbox
+var rfid_master = "0000000000000000";
+var rfid_user1  = "0000000000000000";
+var rfid_user2  = "0000000000000000";
+var rfid_user3  = "0000000000000000";
+var rfid_user4  = "0000000000000000";
+
 var phaseCount          = 0;      // Number of phaes vehicle is charging
 var autoTimer           = null;   // interval object
 var photovoltaicsActive = false;  // is photovoltaics automatic active?
@@ -260,6 +267,14 @@ function checkConfig() {
         adapter.log.warn('Can\'t start adapter for invalid IP address: ' + adapter.config.host);
         everythingFine = false;
     }
+
+    // read in RFID whitelists
+    rfid_master = adapter.config.rfid_master;
+    rfid_user1  = adapter.config.rfid_user1;
+    rfid_user2  = adapter.config.rfid_user2;
+    rfid_user3  = adapter.config.rfid_user3;
+    rfid_user4  = adapter.config.rfid_user4;
+
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
     	everythingFine = addForeignState(adapter.config.stateRegard) & everythingFine;
@@ -315,7 +330,7 @@ function checkConfig() {
 	return everythingFine;
 }
 
-// subscribe a foreign state to save vaues in "currentStateValues"
+// subscribe a foreign state to save values in "currentStateValues"
 function addForeignState(id) {
 	adapter.getForeignState(id, function (err, obj) {
 		if (err) {

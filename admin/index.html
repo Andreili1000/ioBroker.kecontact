@@ -56,14 +56,14 @@
             });
             callback(obj);
         }
-    </script> 
+    </script>
 
     <style>
         #settings tr {
             line-height: 2.5em;
         }
     </style>
-</head>     
+</head>
 <body>
     <!-- you have to put your config page in a div with id adapter-container -->
     <div id="adapter-container">
@@ -80,6 +80,36 @@
                     <td class="admin-icon"></td>
                     <td><input type="number" id="pollInterval" class="value"> <label class="translate">secs</label></td>
                 </tr>
+                // =========  RFID Input Section ===============
+                <tr>
+                    <td colspan="3"><b><label class="translate">rfid</label></b></td>
+                </tr>
+                <tr>
+                    <td><label class="translate" for="rfid_master">rfidmaster</label></td>
+                    <td class="admin-icon"></td>
+                    <td><input type="text" id="rfid_master" class="value"></td>
+                </tr>
+                <tr>
+                    <td><label class="translate" for="rfid_user1">rfiduser1</label></td>
+                    <td class="admin-icon"></td>
+                    <td><input type="text" id="rfid_user1" class="value"></td>
+                </tr>
+                <tr>
+                    <td><label class="translate" for="rfid_user2">rfiduser2</label></td>
+                    <td class="admin-icon"></td>
+                    <td><input type="text" id="rfid_user2" class="value"></td>
+                </tr>
+                <tr>
+                    <td><label class="translate" for="rfid_user3">rfiduser3</label></td>
+                    <td class="admin-icon"></td>
+                    <td><input type="text" id="rfid_user3" class="value"></td>
+                </tr>
+                <tr>
+                    <td><label class="translate" for="rfid_user4">rfiduser4</label></td>
+                    <td class="admin-icon"></td>
+                    <td><input type="text" id="rfid_user4" class="value"></td>
+                </tr>
+                // ============ PV Input Section ===============
                 <tr>
                     <td colspan="3"><b><label class="translate">only-special-values</label></b></td>
                 </tr>
@@ -140,4 +170,4 @@
         </div>
     </div>
 </body>
-</html> 
+</html>

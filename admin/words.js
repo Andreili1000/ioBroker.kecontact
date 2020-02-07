@@ -6,8 +6,8 @@ systemDictionary = {
         "ru": "Настройки драйвера KEBA KeContact"
     },
     "KeContact IP Address": {
-        "en": "Wallbox IP Address", 
-        "de": "IP-Adresse der Wallbox", 
+        "en": "Wallbox IP Address",
+        "de": "IP-Adresse der Wallbox",
         "ru": "IP Минисервера KeContact"
     },
     "Refresh Interval": {
@@ -25,6 +25,30 @@ systemDictionary = {
     "watts": {
         "en": "watts",
         "de": "W"
+    },
+    "rfid": {
+        "en": "Whitelist of RFID Cards",
+        "de": "Angemeldete RFID Karten"
+    },
+    "rfidmaster": {
+        "en": "RFID Master ID",
+        "de": "RFID Master ID"
+    },
+    "rfiduser1": {
+        "en": "RFID User 1 ID",
+        "de": "RFID Benutzer 1 ID"
+    },
+    "rfiduser2": {
+        "en": "RFID User 2 ID",
+        "de": "RFID Benutzer 2 ID"
+    },
+    "rfiduser3": {
+        "en": "RFID User 3 ID",
+        "de": "RFID Benutzer 3 ID"
+    },
+    "rfiduser4": {
+        "en": "RFID User 4 ID",
+        "de": "RFID Benutzer 4 ID"
     },
     "only-special-values": {
         "en": "Following values are only needed if wallbox is to be regulated by photovoltaics unit",
@@ -75,16 +99,16 @@ systemDictionary = {
         "de": "Verbrauch der Wallbox in keinem der Energy-Meter enthalten"
     },
     "tooltip_host": {
-        "en": "IP address of KEBA KeContact wallbox", 
+        "en": "IP address of KEBA KeContact wallbox",
         "de": "IP-Adresse der KEBA KeContact-Wallbox",
         "ru": "IP Адрес KEBA KeContact"
     },
     "tooltip_pollInterval": {
-        "en": "Interval in seconds how often the wallbox should be queried for new values (minimum 5 seconds, 0 = no queries, just broadcasts)", 
+        "en": "Interval in seconds how often the wallbox should be queried for new values (minimum 5 seconds, 0 = no queries, just broadcasts)",
         "de": "Intervall in Sekunden (mind. 5 Sek.) wie oft neue Werte in der Wallbox abgefragt werden sollen (0 = keine Abfrage, nur Broadcast lesen)"
     },
     "tooltip_stateRegard": {
-        "en": "Name of state which holds regard value of energy meter. If both regard and surplus are contained in one state, fill in state here only if regard is a positive value and surplus is negative.", 
+        "en": "Name of state which holds regard value of energy meter. If both regard and surplus are contained in one state, fill in state here only if regard is a positive value and surplus is negative.",
         "de": "Name des States für den Netzbezug des EnergyMeters. Werden Bezug und Einspeisung im selben State gespeichert und der Netzbezug ist positiv und die Einspeisung negativ, dann ist er hier nur anzugeben."
     },
     "tooltip_stateSurplus": {
