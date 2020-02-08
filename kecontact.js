@@ -262,11 +262,11 @@ function checkConfig() {
     }
 
     // read in RFID whitelists
-    setStateInternal("rfid_master", adapter.config.rfid_master);
-    setStateInternal("rfid_user1", adapter.config.rfid_user1);
-    setStateInternal("rfid_user2", adapter.config.rfid_user2);
-    setStateInternal("rfid_user3", adapter.config.rfid_user3);
-    setStateInternal("rfid_user4", adapter.config.rfid_user4);
+    everythingFine = setStateInternal("rfid_master", adapter.config.rfid_master) & everythingFine;
+    //everythingFine = setStateInternal("rfid_user1", adapter.config.rfid_user1) & everythingFine;
+    //everythingFine = setStateInternal("rfid_user2", adapter.config.rfid_user2) & everythingFine;
+    //everythingFine = setStateInternal("rfid_user3", adapter.config.rfid_user3) & everythingFine;
+    //everythingFine = setStateInternal("rfid_user4", adapter.config.rfid_user4) & everythingFine;
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
