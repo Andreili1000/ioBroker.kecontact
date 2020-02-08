@@ -480,7 +480,7 @@ function isVehicleCharging() {
 function displayChargeMode() {
 	var text;
 	if (getStateInternal(statePvAutomatic))
-		text = chargeTextAutomatic[ioBrokerLanguage];adapter.namespace
+		text = chargeTextAutomatic[ioBrokerLanguage];adapter.namespace;
 	else
 		text = chargeTextMax[ioBrokerLanguage];
 	adapter.setState("display", text);
