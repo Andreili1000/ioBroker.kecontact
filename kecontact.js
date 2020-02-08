@@ -269,7 +269,7 @@ function checkConfig() {
         everythingFine = false;
     }
 
-    adapter.SetState("rfid_master", adapter.config.rfid_master);
+    adapter.setState("rfid_master", adapter.config.rfid_master);
     adapter.log.info('set rfid_master to ' + adapter.config.rfid_master);
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
