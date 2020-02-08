@@ -584,6 +584,19 @@
       }
     },
     {
+      "_id": "rfid",
+      "type": "state",
+      "common": {
+        "name": "actual RFID",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "RFID used to unlock wallbox"
+      },
+      "native": {}
+    },
+    {
       "_id": "rfid_master",
       "type": "state",
       "common": {
