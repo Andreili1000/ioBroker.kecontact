@@ -32,6 +32,14 @@ var ioBrokerLanguage      = 'en';
 const chargeTextAutomatic = {'en': 'PV automatic active', 'de': 'PV-optimierte Ladung'};
 const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleistung'};
 
+//var RFID_Settings
+var rfid_master         = null;
+var rfid_user1          = null;
+var rfid_user2          = null;
+var rfid_user3          = null;
+var rfid_user4          = null;
+
+//var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
 var autoTimer           = null;   // interval object
 var photovoltaicsActive = false;  // is photovoltaics automatic active?
@@ -261,12 +269,8 @@ function checkConfig() {
         everythingFine = false;
     }
 
-    // read in RFID whitelists
-    //everythingFine = setStateInternal("rfid_master", adapter.config.rfid_master) & everythingFine;
-    //everythingFine = setStateInternal("rfid_user1", adapter.config.rfid_user1) & everythingFine;
-    //everythingFine = setStateInternal("rfid_user2", adapter.config.rfid_user2) & everythingFine;
-    //everythingFine = setStateInternal("rfid_user3", adapter.config.rfid_user3) & everythingFine;
-    //everythingFine = setStateInternal("rfid_user4", adapter.config.rfid_user4) & everythingFine;
+    adapter.SetState("rfid_master", adapter.config.rfid_master);
+    adapter.log.info('set rfid_master to ' + adapter.config.rfid_master);
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
