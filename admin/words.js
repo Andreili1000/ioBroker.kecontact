@@ -50,6 +50,14 @@ systemDictionary = {
         "en": "RFID User 4 ID",
         "de": "RFID Benutzer 4 ID"
     },
+    "prowl": {
+        "en": "Prowl Access Data",
+        "de": "Prowl Anmeldedaten"
+    },
+    "prowlapi": {
+        "en": "Prowl API Key",
+        "de": "Prowl API Schluessel"
+    },
     "only-special-values": {
         "en": "Following values are only needed if wallbox is to be regulated by photovoltaics unit",
         "de": "Folgende Werte werden nur benötigt, wenn die Wallbox abhängig von einer PV-Anlage geregelt werden soll"

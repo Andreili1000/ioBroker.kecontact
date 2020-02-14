@@ -308,6 +308,7 @@ function checkConfig() {
         everythingFine = false;
     }
 
+
     // copy RFID whitelist to Adapter States
     adapter.setState("rfid_master", adapter.config.rfid_master);
     adapter.setState("rfid_user1", adapter.config.rfid_user1);
@@ -320,6 +321,14 @@ function checkConfig() {
     adapter.setState("rfid_lock", false);
     // use masterkey as default key
     adapter.setState("rfid_select", 0);
+
+    // initialize prowl
+    adapter.setState("prowl_api", adapter.config.prowl_api);
+
+    //const request = require('request');
+    //const url = 'http://benutzer:passwort@192.168.178.10/control?key=';
+    // request(url + key, function(error, response, body) {
+    //      if(error) log('Fehler Request Steckdose', 'error');    
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;

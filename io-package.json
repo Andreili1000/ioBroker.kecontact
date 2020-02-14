@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "kecontact",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
       "0.0.1": {
         "en": "initial commit",
@@ -34,6 +34,10 @@
       "0.3.1": {
         "en": "session report function",
         "de": "Auslesen der Session Reports"
+      },
+      "0.3.2": {
+        "en": "Prowl Push message support",
+        "de": "Prowl Push message Funktion"
       }
     },
     "title": "KEBA KeContact",
@@ -700,6 +704,19 @@
         "read": true,
         "write": true,
         "desc": "RFID Tag User4 (whitelist 4)"
+      },
+      "native": {}
+    },
+    {
+      "_id": "prowl_apikey",
+      "type": "state",
+      "common": {
+        "name": "Prowl API Key",
+        "type": "string",
+        "role": "text",
+        "read": true,
+        "write": true,
+        "desc": "Prowl API Key"
       },
       "native": {}
     },

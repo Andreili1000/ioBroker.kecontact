@@ -28,6 +28,9 @@ This is the interval in seconds how often the wallbox should be queried for new 
 The default value is 30 seconds which is a good balance between the load for the KeConnect and having up-to-date information in ioBroker.
 
 ## Changelog
+### 0.3.2 (2020-02-14)
+* (Andreili1000) added Prowl push message support
+
 ### 0.3.0 (2020-01-26)
 * (Andreili1000) added RFID authorization function
 
