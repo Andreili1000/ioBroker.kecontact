@@ -258,7 +258,8 @@ function start() {
           adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
           // reset lock request
-          adapter.setState("rfid_unlock",false);
+          //adapter.setState("rfid_unlock",false);
+          adapter.setState("rfid_unlock", {val: false, ack: true});
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
@@ -267,20 +268,23 @@ function start() {
           adapter.log.info('try to lock wallbox with RFID ' + newValue);
           sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
           // reset unlock request
-          adapter.setState("rfid_lock",false);
+          //adapter.setState("rfid_lock",false);
+          adapter.setState("rfid_lock", {val: false, ack: true});
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
         adapter.log.info('rfid_select ' + getStateInternal("rfid_select"));
         adapter.log.info('rfid_select newvalue ' + newValue);
 
+
+adapter.setState(id, {val: value, ack: true});
         // assign selected RFID
         switch (newValue){
-          case 0: adapter.setState("rfid_actual",getStateInternal("rfid_master")); break;
-          case 1: adapter.setState("rfid_actual",getStateInternal("rfid_user1")); break;
-          case 2: adapter.setState("rfid_actual",getStateInternal("rfid_user2")); break;
-          case 3: adapter.setState("rfid_actual",getStateInternal("rfid_user3")); break;
-          case 4: adapter.setState("rfid_actual",getStateInternal("rfid_user4")); break;
+          case 0: adapter.setState("rfid_actual", {val: getStateInternal("rfid_master"), ack: true}); break;
+          case 1: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user1"), ack: true}); break;
+          case 2: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user2"), ack: true}); break;
+          case 3: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user3"), ack: true}); break;
+          case 4: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user4"), ack: true}); break;
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
     };
