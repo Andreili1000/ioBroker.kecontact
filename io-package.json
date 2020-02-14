@@ -589,7 +589,7 @@
       "common": {
         "name": "send request to unlock wallbow with rfid",
         "type": "boolean",
-        "role": "indicator",
+        "role": "switch",
         "read": true,
         "write": true,
         "def": false,
@@ -603,7 +603,7 @@
       "common": {
         "name": "send request to lock wallbow with rfid",
         "type": "boolean",
-        "role": "indicator",
+        "role": "switch",
         "read": true,
         "write": true,
         "def": false,
