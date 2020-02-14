@@ -258,7 +258,7 @@ function start() {
           adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
           // reset lock request
-          setStateInternal("rfid_unlock",false);
+          adapter.setState("rfid_unlock",false);
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
@@ -267,20 +267,20 @@ function start() {
           adapter.log.info('try to lock wallbox with RFID ' + newValue);
           sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
           // reset unlock request
-          setStateInternal("rfid_lock",false);
+          adapter.setState("rfid_lock",false);
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
         adapter.log.info('rfid_select ' + getStateInternal("rfid_select"));
-        adapter.log.info('rfid_select newvalue' + newValue); 
+        adapter.log.info('rfid_select newvalue ' + newValue);
 
         // assign selected RFID
         switch (newValue){
-          case 0: setStateInternal("rfid_actual",getStateInternal("rfid_master")); break;
-          case 1: setStateInternal("rfid_actual",getStateInternal("rfid_user1")); break;
-          case 2: setStateInternal("rfid_actual",getStateInternal("rfid_user2")); break;
-          case 3: setStateInternal("rfid_actual",getStateInternal("rfid_user3")); break;
-          case 4: setStateInternal("rfid_actual",getStateInternal("rfid_user4")); break;
+          case 0: adapter.setState("rfid_actual",getStateInternal("rfid_master")); break;
+          case 1: adapter.setState("rfid_actual",getStateInternal("rfid_user1")); break;
+          case 2: adapter.setState("rfid_actual",getStateInternal("rfid_user2")); break;
+          case 3: adapter.setState("rfid_actual",getStateInternal("rfid_user3")); break;
+          case 4: adapter.setState("rfid_actual",getStateInternal("rfid_user4")); break;
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
     };
