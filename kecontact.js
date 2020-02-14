@@ -318,6 +318,8 @@ function checkConfig() {
     // initialize RFID lock/unlock requestReports
     adapter.setState("rfid_unlock", false);
     adapter.setState("rfid_lock", false);
+    // use masterkey as default key
+    adapter.setState("rfid_select", 0);
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
