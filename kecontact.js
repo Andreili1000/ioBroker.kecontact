@@ -323,12 +323,12 @@ function checkConfig() {
     adapter.setState("rfid_select", 0);
 
     // initialize prowl
-    adapter.setState("prowl_api", adapter.config.prowl_api);
+    adapter.setState("prowl_apikey", adapter.config.prowl_apikey);
 
     //const request = require('request');
     //const url = 'http://benutzer:passwort@192.168.178.10/control?key=';
     // request(url + key, function(error, response, body) {
-    //      if(error) log('Fehler Request Steckdose', 'error');    
+    //      if(error) log('Fehler Request Steckdose', 'error');
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
