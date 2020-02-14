@@ -252,30 +252,24 @@ function start() {
     //
     stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
-        adapter.log.info('rfid_unlock ' + (newValue ? 1 : 0));
-        adapter.log.info('rfid_actual ' + getStateInternal("rfid_actual"));
         if (newValue){
           adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
-          // reset lock request
-          //adapter.setState("rfid_unlock",false);
+          // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
           adapter.setState("rfid_unlock", {val: false, ack: true});
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
-          adapter.log.info('try to lock wallbox with RFID ' + newValue);
+          adapter.log.info('try to lock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
-          // reset unlock request
-          //adapter.setState("rfid_lock",false);
+          // reset lock request - set acknowledge otherwise non-existant stateChangeListers is called
           adapter.setState("rfid_lock", {val: false, ack: true});
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
-        adapter.log.info('rfid_select ' + getStateInternal("rfid_select"));
-        adapter.log.info('rfid_select newvalue ' + newValue);
-
+        adapter.log.info('rfid_select ' + newValue);
         // assign selected RFID
         switch (newValue){
           case 0: adapter.setState("rfid_actual", {val: getStateInternal("rfid_master"), ack: true}); break;
@@ -320,6 +314,10 @@ function checkConfig() {
     adapter.setState("rfid_user2", adapter.config.rfid_user2);
     adapter.setState("rfid_user3", adapter.config.rfid_user3);
     adapter.setState("rfid_user4", adapter.config.rfid_user4);
+
+    // initialize RFID lock/unlock requestReports
+    adapter.setState("rfid_unlock", false);
+    adapter.setState("rfid_lock", false);
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
