@@ -252,8 +252,10 @@ function start() {
     //
     stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
+        adapter.log.info('rfid_unlock ' + (newValue ? 1 : 0));
+        adapter.log.info('rfid_actual ' + getStateInternal("rfid_actual"));
         if (newValue){
-          adapter.log.info('try to unlock wallbox with RFID ' + newValue);
+          adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
           // reset lock request
           setStateInternal("rfid_unlock",false);
@@ -269,6 +271,9 @@ function start() {
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
+        adapter.log.info('rfid_select ' + getStateInternal("rfid_select"));
+        adapter.log.info('rfid_select newvalue' + newValue); 
+
         // assign selected RFID
         switch (newValue){
           case 0: setStateInternal("rfid_actual",getStateInternal("rfid_master")); break;
