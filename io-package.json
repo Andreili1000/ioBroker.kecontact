@@ -584,7 +584,49 @@
       }
     },
     {
-      "_id": "rfid",
+      "_id": "rfid_unlock",
+      "type": "state",
+      "common": {
+        "name": "send request to unlock wallbow with rfid",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": true,
+        "def": false,
+        "desc": "unlock request similar to showing rfid"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_lock",
+      "type": "state",
+      "common": {
+        "name": "send request to lock wallbow with rfid",
+        "type": "boolean",
+        "role": "indicator",
+        "read": true,
+        "write": true,
+        "def": false,
+        "desc": "lock request similar to showing rfid"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_select",
+      "type": "state",
+      "common": {
+        "name": "select rfid card out of whitelist",
+        "type": "number",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "def": 0,
+        "desc": "select rfid card out of whitelist (0-4)"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid_actual",
       "type": "state",
       "common": {
         "name": "actual RFID",
@@ -592,7 +634,7 @@
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID used to unlock wallbox"
+        "desc": "RFID to be used to unlock/lock wallbox"
       },
       "native": {}
     },
@@ -600,12 +642,12 @@
       "_id": "rfid_master",
       "type": "state",
       "common": {
-        "name": "RFID Tag Master",
+        "name": "RFID Tag Master (whitelist 0)",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID Tag Master"
+        "desc": "RFID Tag Master (whitelist 0)"
       },
       "native": {}
     },
@@ -613,12 +655,12 @@
       "_id": "rfid_user1",
       "type": "state",
       "common": {
-        "name": "RFID Tag User1",
+        "name": "RFID Tag User1 (whitelist 1)",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID Tag User1"
+        "desc": "RFID Tag User1 (whitelist 1)"
       },
       "native": {}
     },
@@ -626,12 +668,12 @@
       "_id": "rfid_user2",
       "type": "state",
       "common": {
-        "name": "RFID Tag User2",
+        "name": "RFID Tag User2 (whitelist 2)",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID Tag User2"
+        "desc": "RFID Tag User2 (whitelist 2)"
       },
       "native": {}
     },
@@ -639,12 +681,12 @@
       "_id": "rfid_user3",
       "type": "state",
       "common": {
-        "name": "RFID Tag User3",
+        "name": "RFID Tag User3 (whitelist 3)",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID Tag User3"
+        "desc": "RFID Tag User3 (whitelist 3)"
       },
       "native": {}
     },
@@ -652,12 +694,12 @@
       "_id": "rfid_user4",
       "type": "state",
       "common": {
-        "name": "RFID Tag User4",
+        "name": "RFID Tag User4 (whitelist 4)",
         "type": "string",
         "role": "text",
         "read": true,
         "write": true,
-        "desc": "RFID Tag User4"
+        "desc": "RFID Tag User4 (whitelist 4)"
       },
       "native": {}
     },

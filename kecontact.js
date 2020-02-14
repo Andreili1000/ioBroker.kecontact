@@ -112,6 +112,7 @@ adapter.on('stateChange', function (id, state) {
     }
     adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
     // save state changes of foreign adapters - this is done even if value has not changed but acknowledged
+
     if (id.startsWith(adapter.namespace + '.')) {
     	// if vehicle is (un)plugged check if schedule has to be disabled/enabled
     	if (id == adapter.namespace + '.' + stateWallboxPlug) {
@@ -120,27 +121,36 @@ adapter.on('stateChange', function (id, state) {
     			setTimeout(checkWallboxPower, 3000);  // wait 3 seconds after vehicle is plugged
     	}
     }
+
+    // save oldValue of state for stateChangeListerner
     var oldValue = getStateInternal(id);
+    // update currentStateValues with actual state value
     setStateInternal(id, state.val);
 
     if (state.ack) {
         return;
     }
 
+    // check whether function in function array has been defined yet, i.e. id exisits in function array
     if (!stateChangeListeners.hasOwnProperty(id)) {
         adapter.log.error('Unsupported state change: ' + id);
         return;
     }
-
+    // ... otherwise proceed
+    // function is called which contains what to do in case of a state change of ID
+    // oldValue=OLDVALUE, state.val = NEWVALUE
     stateChangeListeners[id](oldValue, state.val);
 });
 
-// startup
+// startup adapter
 adapter.on('ready', function () {
     main();
 });
 
+// main loop
 function main() {
+
+    // read in adapter configuration page
     if (! checkConfig()) {
     	adapter.log.error('start of adapter not possible due to config errors');
     	return;
@@ -216,6 +226,10 @@ function main() {
 function start() {
     adapter.subscribeStates('*');
 
+    // stateChangeListers is an array of functions.
+    // Each single function is called when state [id] changes.
+    // Each single function is called with "old value" and "new value" of state [id] as parameters
+
     stateChangeListeners[adapter.namespace + '.enableUser'] = function (oldValue, newValue) {
         sendUdpDatagram('ena ' + (newValue ? 1 : 0), true);
     };
@@ -229,14 +243,45 @@ function start() {
         adapter.log.info('display ' + newValue.replace(/ /g, "$"));
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
     };
-    stateChangeListeners[adapter.namespace + '.rfid'] = function (oldValue, newValue) {
-      adapter.log.info('try to unlock wallbox with RFID ' + newValue);
-      sendUdpDatagram('start ' + newValue, true);
-    };
     stateChangeListeners[adapter.namespace + '.requestReportID'] = function (oldValue, newValue) {
       adapter.log.info('request report ' + newValue + 'from wallbox');
       sendUdpDatagram('report ' + newValue, true);
     };
+    //
+    // handle RFID commands
+    //
+    stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
+        // send UDP command only when transition to TRUE
+        if (newValue){
+          adapter.log.info('try to unlock wallbox with RFID ' + newValue);
+          sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
+          // reset lock request
+          setStateInternal("rfid_unlock",false);
+        };
+    };
+    stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
+        // send UDP command only when transition to TRUE
+        if (newValue){
+          adapter.log.info('try to lock wallbox with RFID ' + newValue);
+          sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
+          // reset unlock request
+          setStateInternal("rfid_lock",false);
+        };
+    };
+    stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
+        // assign selected RFID
+        switch (newValue){
+          case 0: setStateInternal("rfid_actual",getStateInternal("rfid_master")); break;
+          case 1: setStateInternal("rfid_actual",getStateInternal("rfid_user1")); break;
+          case 2: setStateInternal("rfid_actual",getStateInternal("rfid_user2")); break;
+          case 3: setStateInternal("rfid_actual",getStateInternal("rfid_user3")); break;
+          case 4: setStateInternal("rfid_actual",getStateInternal("rfid_user4")); break;
+          default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
+        };
+    };
+    //
+    // handle Wallbox control via PV
+    //
     stateChangeListeners[adapter.namespace + '.' + stateWallboxDisabled] = function (oldValue, newValue) {
         adapter.log.info('change pause status of wallbox from ' + oldValue + ' to ' + newValue);
       	checkWallboxPower();
@@ -631,7 +676,6 @@ function handleMessage(message) {
         // first key is always ID - save it for this message
         if (key== 'ID'){
           ThisReportID=message[key];
-          adapter.log.info("ThisReportID=" + ThisReportID);
         };
         // this state exists in adapter
         if (states[key]) {
