@@ -276,8 +276,6 @@ function start() {
         adapter.log.info('rfid_select ' + getStateInternal("rfid_select"));
         adapter.log.info('rfid_select newvalue ' + newValue);
 
-
-adapter.setState(id, {val: value, ack: true});
         // assign selected RFID
         switch (newValue){
           case 0: adapter.setState("rfid_actual", {val: getStateInternal("rfid_master"), ack: true}); break;
