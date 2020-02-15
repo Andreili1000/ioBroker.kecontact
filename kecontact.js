@@ -9,6 +9,7 @@ var utils = require(__dirname + '/lib/utils');
 // other dependencies:
 var dgram = require('dgram');
 var os = require('os');
+var request = require('request');
 
 // create the adapter object
 var adapter = utils.Adapter('kecontact');
@@ -31,6 +32,10 @@ var sendQueue = [];
 var ioBrokerLanguage      = 'en';
 const chargeTextAutomatic = {'en': 'PV automatic active', 'de': 'PV-optimierte Ladung'};
 const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleistung'};
+
+//var prowl_Settings
+const prowl_application = "kecontact";
+const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
 
 //var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
@@ -255,8 +260,14 @@ function start() {
         if (newValue){
           adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
+          sentProwlMessage(1, "try to unlock wallbox with RFID " + getStateInternal("rfid_actual"))
           // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
           adapter.setState("rfid_unlock", {val: false, ack: true});
+
+
+          // request(url + key, function(error, response, body) {
+          //      if(error) log('Fehler Request Steckdose', 'error');
+
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
@@ -322,13 +333,8 @@ function checkConfig() {
     // use masterkey as default key
     adapter.setState("rfid_select", 0);
 
-    // initialize prowl
+    // initialize prowl unique prowl API key
     adapter.setState("prowl_apikey", adapter.config.prowl_apikey);
-
-    //const request = require('request');
-    //const url = 'http://benutzer:passwort@192.168.178.10/control?key=';
-    // request(url + key, function(error, response, body) {
-    //      if(error) log('Fehler Request Steckdose', 'error');
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
@@ -403,6 +409,15 @@ function addForeignState(id) {
 		}
 	});
     return true;
+}
+
+// sents push message via prowl
+function sentProwlMessage(priority, message) {
+    adapter.log.info(prowl_url + getStateInternal("prowl_apikey") + "&application=" + prowl_application
+    + "&priority=" + priority + "&description="+message);
+
+    request(prowl_url + getStateInternal("prowl_apikey") + "&application=" + prowl_application
+    + "&priority=" + priority + "&description="+message);
 }
 
 // handle incomming message from wallbox
