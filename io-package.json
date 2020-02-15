@@ -708,19 +708,6 @@
       "native": {}
     },
     {
-      "_id": "prowl_apikey",
-      "type": "state",
-      "common": {
-        "name": "Prowl API Key",
-        "type": "string",
-        "role": "text",
-        "read": true,
-        "write": true,
-        "desc": "Prowl API Key"
-      },
-      "native": {}
-    },
-    {
       "_id": "automatic",
       "type": "channel",
       "common": {

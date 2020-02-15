@@ -331,9 +331,6 @@ function checkConfig() {
     // use masterkey as default key
     adapter.setState("rfid_select", 0);
 
-    // initialize prowl unique prowl API key
-    adapter.setState("prowl_apikey", adapter.config.prowl_apikey);
-
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
     	everythingFine = addForeignState(adapter.config.stateRegard) & everythingFine;
