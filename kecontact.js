@@ -252,28 +252,25 @@ function start() {
       adapter.log.info('request report ' + newValue + 'from wallbox');
       sendUdpDatagram('report ' + newValue, true);
     };
+
     //
     // handle RFID commands
     //
     stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
-          adapter.log.info('try to unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
+          adapter.log.info('unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
+          sentProwlMessage(1, "unlock wallbox with RFID " + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
-          sentProwlMessage(1, "try to unlock wallbox with RFID " + getStateInternal("rfid_actual"))
           // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
           adapter.setState("rfid_unlock", {val: false, ack: true});
-
-
-          // request(url + key, function(error, response, body) {
-          //      if(error) log('Fehler Request Steckdose', 'error');
-
         };
     };
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
-          adapter.log.info('try to lock wallbox with RFID ' + getStateInternal("rfid_actual"));
+          adapter.log.info('lock wallbox with RFID ' + getStateInternal("rfid_actual"));
+          sentProwlMessage(1, "lock wallbox with RFID " + getStateInternal("rfid_actual"));
           sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
           // reset lock request - set acknowledge otherwise non-existant stateChangeListers is called
           adapter.setState("rfid_lock", {val: false, ack: true});
@@ -291,6 +288,7 @@ function start() {
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
     };
+
     //
     // handle Wallbox control via PV
     //
@@ -413,10 +411,10 @@ function addForeignState(id) {
 
 // sents push message via prowl
 function sentProwlMessage(priority, message) {
-    adapter.log.info(prowl_url + getStateInternal("prowl_apikey") + "&application=" + prowl_application
+    adapter.log.debug(prowl_url + getStateInternal("prowl_apikey") + "&application=" + prowl_application
     + "&priority=" + priority + "&description="+message);
 
-    request(prowl_url + getStateInternal("prowl_apikey") + "&application=" + prowl_application
+    request(prowl_url + adapter.config.prowl_apikey + "&application=" + prowl_application
     + "&priority=" + priority + "&description="+message);
 }
 
