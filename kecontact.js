@@ -34,7 +34,7 @@ const chargeTextAutomatic = {'en': 'PV automatic active', 'de': 'PV-optimierte L
 const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleistung'};
 
 //var prowl_Settings
-const prowl_application = "kecontact";
+const prowl_application = adapter.namespace;
 const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
 
 //var photovoltaics_Settings
