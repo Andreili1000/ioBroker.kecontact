@@ -806,6 +806,6 @@ function setStateInternal(id, value) {
 }
 
 function setStateAck(id, value) {
-    //setStateInternal(id, value);
+    setStateInternal(id, value);
     adapter.setState(id, {val: value, ack: true});
 }
