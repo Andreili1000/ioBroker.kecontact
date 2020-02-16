@@ -132,12 +132,12 @@ adapter.on('stateChange', function (id, state) {
     setStateInternal(id, state.val);
 
     //
-    // check wheter statechange needs a push message (only if state has changed)
+    // check whether statechange needs a push message (only if state has changed)
     //
     switch (id){
       case adapter.namespace + '.authreq':
-        adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
-        //if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+        //adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
+        if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
         break;
     }
 
