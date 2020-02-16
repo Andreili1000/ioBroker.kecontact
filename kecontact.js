@@ -134,12 +134,12 @@ adapter.on('stateChange', function (id, state) {
     //
     // check wheter statechange needs a push message (only if state has changed)
     //
-    switch (id){
-      case adapter.namespace + '.authreq':
-        adapter.log.info('oldValue=' + oldValue + ' newValue=' + state.val);
-        if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-        break;
-    }
+    //switch (id){
+    //  case adapter.namespace + '.authreq':
+    //    adapter.log.info('oldValue=' + oldValue + ' newValue=' + state.val);
+    //    if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+    //    break;
+    //}
 
     if (state.ack) {
       return;
@@ -296,6 +296,11 @@ function start() {
           case 4: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user4"), ack: true}); break;
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
+    };
+
+    stateChangeListeners[adapter.namespace + '.authreq'] = function (oldValue, newValue) {
+      adapter.log.info('oldValue=' + oldValue + ' newValue=' + newValue);
+      if (!newValue){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
     };
 
     //
