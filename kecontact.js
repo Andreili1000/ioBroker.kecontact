@@ -476,6 +476,7 @@ function handleWallboxBroadcast(message, remote) {
         requestReports();
 
         var msg = message.toString().trim();
+        adapter.log.info('Received Broadcast' + msg);
         handleMessage(JSON.parse(msg));
     } catch (e) {
         adapter.log.warn('Error handling message: ' + e);
