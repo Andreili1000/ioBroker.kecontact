@@ -261,6 +261,10 @@ function start() {
     stateChangeListeners[adapter.namespace + '.display'] = function (oldValue, newValue) {
         adapter.log.info('display ' + newValue.replace(/ /g, "$"));
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
+        // clear display variable after 10s as display on wallbox itself
+        setTimeout(function() {
+          adapter.setState("display", {val: "", ack: true});
+        }, 10000);
     };
     stateChangeListeners[adapter.namespace + '.requestReportID'] = function (oldValue, newValue) {
       adapter.log.info('request report ' + newValue + 'from wallbox');
@@ -478,7 +482,7 @@ function handleWallboxBroadcast(message, remote) {
         var msg = message.toString().trim();
         adapter.log.info('Received Broadcast' + msg);
         //
-        // message handling for broadcast messages disabled - show in log only 
+        // message handling for broadcast messages disabled - show in log only
         //
         // handleMessage(JSON.parse(msg));
     } catch (e) {
