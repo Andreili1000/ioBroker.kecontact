@@ -131,7 +131,7 @@ adapter.on('stateChange', function (id, state) {
     // check wheter statechange needs a push message
     //
     switch (id){
-      case 'authreq':
+      case adapter.namespace + '.authreq':
         if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
         break;
     }
