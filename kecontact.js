@@ -461,7 +461,7 @@ function handleWallboxMessage(message, remote) {
             msg = '{ ' + msg + ' }';
         }
 
-        adapter.log.info('Received ' + msg);
+        //adapter.log.info('Received ' + msg);
         handleMessage(JSON.parse(msg));
     } catch (e) {
         adapter.log.warn('Error handling message: ' + e);
@@ -477,7 +477,10 @@ function handleWallboxBroadcast(message, remote) {
 
         var msg = message.toString().trim();
         adapter.log.info('Received Broadcast' + msg);
-        handleMessage(JSON.parse(msg));
+        //
+        // message handling for broadcast messages disabled - show in log only 
+        //
+        // handleMessage(JSON.parse(msg));
     } catch (e) {
         adapter.log.warn('Error handling message: ' + e);
     }
