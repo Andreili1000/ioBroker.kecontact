@@ -336,17 +336,17 @@ function checkConfig() {
 
 
     // copy RFID whitelist to Adapter States (status: ack=true)
-    adapter.setState("rfid_master", {val: adapter.config.rfid_master; ack: true});
-    adapter.setState("rfid_user1",  {val: adapter.config.user1; ack: true});
-    adapter.setState("rfid_user2",  {val: adapter.config.user2; ack: true});
-    adapter.setState("rfid_user3",  {val: adapter.config.user3; ack: true});
-    adapter.setState("rfid_user4",  {val: adapter.config.user4; ack: true});
+    adapter.setState("rfid_master", {val: adapter.config.rfid_master, ack: true});
+    adapter.setState("rfid_user1",  {val: adapter.config.user1, ack: true});
+    adapter.setState("rfid_user2",  {val: adapter.config.user2, ack: true});
+    adapter.setState("rfid_user3",  {val: adapter.config.user3, ack: true});
+    adapter.setState("rfid_user4",  {val: adapter.config.user4, ack: true});
 
     // initialize RFID lock/unlock requestReports (commands: ack=false)
-    adapter.setState("rfid_unlock", {val: false; ack: false});
-    adapter.setState("rfid_lock",   {val: false; ack: false});
+    adapter.setState("rfid_unlock", {val: false, ack: false});
+    adapter.setState("rfid_lock",   {val: false, ack: false});
     // use masterkey as default key (commands ack=false)
-    adapter.setState("rfid_select", {val: 0; ack: false});
+    adapter.setState("rfid_select", {val: 0, ack: false});
 
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
