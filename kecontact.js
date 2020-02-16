@@ -127,18 +127,21 @@ adapter.on('stateChange', function (id, state) {
     	}
     }
 
-    //
-    // check wheter statechange needs a push message
-    //
-    switch (id){
-      case adapter.namespace + '.authreq':
-        if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-        break;
-    }
-
     // copy state change also in StateInternal
     var oldValue = getStateInternal(id);
     setStateInternal(id, state.val);
+
+    //
+    // check wheter statechange needs a push message (only if state has changed)
+    //
+    if (oldValue!=state.val){
+      switch (id){
+        case adapter.namespace + '.authreq':
+          if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+          break;
+      }
+    }
+
       if (state.ack) {
         return;
     }
