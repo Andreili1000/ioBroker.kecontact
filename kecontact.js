@@ -461,6 +461,7 @@ function handleWallboxMessage(message, remote) {
             msg = '{ ' + msg + ' }';
         }
 
+        adapter.log.info('Received ' + msg);
         handleMessage(JSON.parse(msg));
     } catch (e) {
         adapter.log.warn('Error handling message: ' + e);
