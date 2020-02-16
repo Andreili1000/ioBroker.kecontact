@@ -134,16 +134,15 @@ adapter.on('stateChange', function (id, state) {
     //
     // check wheter statechange needs a push message (only if state has changed)
     //
-    if (oldValue!=state.val){
-      switch (id){
-        case adapter.namespace + '.authreq':
-          if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-          break;
-      }
+    switch (id){
+      case adapter.namespace + '.authreq':
+        adapter.log.info('oldValue=' + oldValue + ' newValue=' + state.val);
+        if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+        break;
     }
 
-      if (state.ack) {
-        return;
+    if (state.ack) {
+      return;
     }
 
     // check whether function in function array has been defined yet, i.e. id exisits in function array
