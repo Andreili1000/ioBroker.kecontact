@@ -127,12 +127,19 @@ adapter.on('stateChange', function (id, state) {
     	}
     }
 
-    // save oldValue of state for stateChangeListerner
-    var oldValue = getStateInternal(id);
-    // update currentStateValues with actual state value
-    setStateInternal(id, state.val);
+    //
+    // check wheter statechange needs a push message
+    //
+    switch (id){
+      case 'authreq':
+        if (!state.val) sentProwlMessage(1,"wallbox unlocked") else sentProwlMessage(1,"wallbox locked");
+        break;
+    }
 
-    if (state.ack) {
+    // copy state change also in StateInternal
+    var oldValue = getStateInternal(id);
+    setStateInternal(id, state.val);
+      if (state.ack) {
         return;
     }
 
