@@ -23,9 +23,9 @@ var rxSocketReports;
 var rxSocketBrodacast;
 var pollTimer;
 var sendDelayTimer;
-var states = {};          // contains all actual state values
+var states = {};                 // contains all state objects of adapter
 var stateChangeListeners = {};
-var currentStateValues = {}; // contains all actual state vaues
+var currentStateValues = {};     // contains all actual state values of all states
 var sendQueue = [];
 
 //var ioBroker_Settings
@@ -141,17 +141,18 @@ adapter.on('stateChange', function (id, state) {
     //    break;
     //}
 
+    // ACK=true  -> state is status only, no further processing necessary
+    // ACK=false -> state is command and needs proecessing by stateChangeListeners
     if (state.ack) {
       return;
     }
 
-    // check whether function in function array has been defined yet, i.e. id exisits in function array
+    // check whether command function has been defined, i.e. id exisits in function array
     if (!stateChangeListeners.hasOwnProperty(id)) {
         adapter.log.error('Unsupported state change: ' + id);
         return;
     }
-    // ... otherwise proceed
-    // function is called which contains what to do in case of a state change of ID
+    // if yes then start command processing
     // oldValue=OLDVALUE, state.val = NEWVALUE
     stateChangeListeners[id](oldValue, state.val);
 });
@@ -205,13 +206,15 @@ function main() {
     	}
     });
 
+    // create state[] for every state which is native from Keba Wallbox,
+    // i.e. is transmitted via UDP protocol from Wallbox
     adapter.getStatesOf(function (err, data) {
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].native && data[i].native.udpKey) {
-                states[data[i].native.udpKey] = data[i];
-            }
-        }
-        // save all state value into internal store
+      for (var i = 0; i < data.length; i++) {
+          if (data[i].native && data[i].native.udpKey) {
+              states[data[i].native.udpKey] = data[i];
+          }
+      }
+      // save state values of all states also into internal state storage array
     	adapter.getStates('*', function (err, obj) {
     		if (err) {
     			adapter.log.error('error reading states: ' + err);
@@ -803,6 +806,6 @@ function setStateInternal(id, value) {
 }
 
 function setStateAck(id, value) {
-    setStateInternal(id, value);
+    //setStateInternal(id, value);
     adapter.setState(id, {val: value, ack: true});
 }
