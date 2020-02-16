@@ -134,11 +134,13 @@ adapter.on('stateChange', function (id, state) {
     //
     // check whether statechange needs a push message (only if state has changed)
     //
-    switch (id){
-      case adapter.namespace + '.authreq':
-        //adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
-        if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-        break;
+    if (oldValue!=state.val){
+      switch (id){
+        case adapter.namespace + '.authreq':
+          //adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
+          if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+          break;
+      }
     }
 
     // ACK=true  -> state is status only, no further processing necessary
