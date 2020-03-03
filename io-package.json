@@ -38,6 +38,10 @@
       "0.3.2": {
         "en": "Prowl Push message support",
         "de": "Prowl Push message Funktion"
+      },
+      "0.3.3": {
+        "en": "session report file backup",
+        "de": "Session Report File Sicherung"
       }
     },
     "title": "KEBA KeContact",

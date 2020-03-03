@@ -2,13 +2,11 @@
 systemDictionary = {
     "KEBA KeContact adapter settings": {
         "en": "KEBA KeContact adapter settings",
-        "de": "KEBA KeContact Adapter-Einstellungen",
-        "ru": "Настройки драйвера KEBA KeContact"
+        "de": "KEBA KeContact Adapter-Einstellungen"
     },
     "KeContact IP Address": {
         "en": "Wallbox IP Address",
-        "de": "IP-Adresse der Wallbox",
-        "ru": "IP Минисервера KeContact"
+        "de": "IP-Adresse der Wallbox"
     },
     "Refresh Interval": {
         "en": "Refresh Interval",
@@ -57,6 +55,14 @@ systemDictionary = {
     "prowlapi": {
         "en": "Prowl API Key",
         "de": "Prowl API Schluessel"
+    },
+    "sessionfile": {
+        "en": "Session Reports Backup",
+        "de": "Session Reports Backup"
+    },
+    "sessionfiledir": {
+        "en": "Directory for Backup",
+        "de": "Backupverzeichnis"
     },
     "only-special-values": {
         "en": "Following values are only needed if wallbox is to be regulated by photovoltaics unit",
@@ -109,7 +115,6 @@ systemDictionary = {
     "tooltip_host": {
         "en": "IP address of KEBA KeContact wallbox",
         "de": "IP-Adresse der KEBA KeContact-Wallbox",
-        "ru": "IP Адрес KEBA KeContact"
     },
     "tooltip_pollInterval": {
         "en": "Interval in seconds how often the wallbox should be queried for new values (minimum 5 seconds, 0 = no queries, just broadcasts)",
@@ -151,8 +156,32 @@ systemDictionary = {
         "en": "Name of state for the 3rd energy meter which shall be used to calculate max. power consumption for power limitation",
         "de": "Name des States des 3. Energy-Meters, das für die Berechnung des Gesamtverbrauchs für die Leistungsbegrenzung einbezogen wird."
     },
-    "tooltip_wallboxNotIncluded": {
-        "en": "Check if none of the listed energy meters also cover power consumption of wallbox",
-        "de": "Die Option ist zu markieren, wenn der Verbrauch der Wallbox nicht in der Leistung der Energy-Meter enthalten ist."
+    "tooltip_rfid_master": {
+        "en": "ID/Tag of master RFID card (16 digits)",
+        "de": "ID/Tag der Master RFID Karte (16 Ziffern)"
+    },
+    "tooltip_rfid_user1": {
+        "en": "ID/Tag of RFID card User1 (16 digits)",
+        "de": "ID/Tag der anelernten User1 RFID Karte (16 Ziffern)"
+    },
+    "tooltip_rfid_user2": {
+        "en": "ID/Tag of RFID card User2 (16 digits)",
+        "de": "ID/Tag der anelernten User2 RFID Karte (16 Ziffern)"
+    },
+    "tooltip_rfid_user3": {
+        "en": "ID/Tag of RFID card User3 (16 digits)",
+        "de": "ID/Tag der anelernten User3 RFID Karte (16 Ziffern)"
+    },
+    "tooltip_rfid_user4": {
+        "en": "ID/Tag of RFID card User4 (16 digits)",
+        "de": "ID/Tag der anelernten User4 RFID Karte (16 Ziffern)"
+    },
+    "tooltip_prowl_apikey": {
+        "en": "API Key to access online prawl service",
+        "de": "API Key als Zugang zum Online Prawl Service"
+    },
+    "tooltip_session_filedir": {
+        "en": "Directory to store session report log file",
+        "de": "Verzeichnis zum Abspeichern der Session Report Logdatei"
     },
 };

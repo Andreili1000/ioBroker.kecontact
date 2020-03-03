@@ -10,6 +10,7 @@ var utils = require(__dirname + '/lib/utils');
 var dgram = require('dgram');
 var os = require('os');
 var request = require('request');
+var fs = require ('fs');
 
 // create the adapter object
 var adapter = utils.Adapter('kecontact');
@@ -36,6 +37,9 @@ const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleist
 //var prowl_Settings
 const prowl_application = adapter.namespace;
 const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
+
+//var session_Settings
+var session_log         = '/home/pi/keba/session.csv';
 
 //var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
