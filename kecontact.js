@@ -278,6 +278,7 @@ function start() {
       // new session report has been read
       // because 'session_rfidtag' is the last state change in sequence of the session report
       // write now result to file
+      adapter.log.info('append session report to file');
       fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session_sessionID") + ' , ' +
                                                  getStateInternal("session_currentHardware") + ' , ' +
                                                  getStateInternal("session_estart") + ' , ' +
