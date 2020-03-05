@@ -271,7 +271,7 @@ function start() {
         }, 10000);
     };
     stateChangeListeners[adapter.namespace + '.requestReportID'] = function (oldValue, newValue) {
-      adapter.log.info('request report ' + newValue + 'from wallbox');
+      adapter.log.info('request report ' + newValue + ' from wallbox');
       sendUdpDatagram('report ' + newValue, true);
     };
     stateChangeListeners[adapter.namespace + '.session_rfidtag'] = function (oldValue, newValue) {

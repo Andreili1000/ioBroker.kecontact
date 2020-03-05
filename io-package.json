@@ -984,7 +984,7 @@
         "type": "string",
         "role": "value",
         "read": true,
-        "write": false,
+        "write": true,
         "desc": "RFID tag used for authorizing session"
       },
       "native": {"udpKey": "RFID tag"}
