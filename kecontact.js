@@ -278,10 +278,21 @@ function start() {
       // new session report has been read
       // because 'session_rfidtag' is the last state change in sequence of the session report
       // write now result to file
-      fs.appendFile('/home/pi/keba/session.csv', 'dataset\n', function (err) {
-        if (err) throw err;
-      });
-
+      fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session_sessionID") + ' , ' +
+                                                 getStateInternal("session_currentHardware") + ' , ' +
+                                                 getStateInternal("session_estart") + ' , ' +
+                                                 getStateInternal("session_ePres") + ' , ' +
+                                                 getStateInternal("session_estart") + ' , ' +
+                                                 getStateInternal("session_end") + ' , ' +
+                                                 getStateInternal("session_starttime") + ' , ' +
+                                                 getStateInternal("session_endtime") + ' , ' +
+                                                 getStateInternal("session_reason") + ' , ' +
+                                                 getStateInternal("session_timeq") + ' , ' +
+                                                 getStateInternal("session_rfidtag") + ' , ' +
+                                                 getStateInternal("session_rfidclass") + '\n',
+        function (err) {
+          if (err) throw err;
+       });
     };
 
     //
