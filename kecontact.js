@@ -274,6 +274,15 @@ function start() {
       adapter.log.info('request report ' + newValue + 'from wallbox');
       sendUdpDatagram('report ' + newValue, true);
     };
+    stateChangeListeners[adapter.namespace + '.session_rfidtag'] = function (oldValue, newValue) {
+      // new session report has been read
+      // because 'session_rfidtag' is the last state change in sequence of the session report
+      // write now result to file
+      fs.appendFile('/home/pi/keba/session.csv', 'dataset\n', function (err) {
+        if (err) throw err;
+      });
+
+    };
 
     //
     // handle RFID commands
@@ -358,6 +367,14 @@ function checkConfig() {
     // use masterkey as default key (commands ack=false)
     adapter.setState("rfid_select", {val: 0, ack: false});
 
+    // initialize session report log file
+    fs.writeFile('/home/pi/keba/session.csv', 'sessionID, currHW, Estart, Epres, startedS, endedS, started, ended, reason, timeq, RFIDtag, RFIDclass\n', function(err) {
+      // If an error occurred, show it and return
+      if(err) return adapt.log.error(err);
+    // Successfully wrote to the file!
+    });
+
+    // initialize PV data
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
     	photovoltaicsActive = true;
     	everythingFine = addForeignState(adapter.config.stateRegard) & everythingFine;
