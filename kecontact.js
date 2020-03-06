@@ -39,7 +39,7 @@ const prowl_application = adapter.namespace;
 const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
 
 // default session logfile - if path is not specified otherwise in adapter config page
-var session_logfile     = /home/pi/session.csv;
+var session_logfile     = "/home/pi/session.csv";
 
 //var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
