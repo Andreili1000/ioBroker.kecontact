@@ -38,6 +38,8 @@ const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleist
 const prowl_application = adapter.namespace;
 const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
 
+// default session logfile - if path is not specified otherwise in adapter config page
+var session_logfile     = /home/pi/session.csv;
 
 //var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
@@ -409,8 +411,11 @@ function checkConfig() {
     adapter.setState("session.log", {val: false, ack: false});
     adapter.setState("session.logall", {val: false, ack: false});
     adapter.setState("session.clearlog", {val: false, ack: false});
+
     // initialize session report log file
-    var session_logfile = adapter.config.session_filedir+'/session.csv';
+    if (adapter.config.session_filedir != ""){
+      session_logfile = adapter.config.session_filedir+'/session.csv';
+    }
     sessionClearLog(session_logfile);
 
     // initialize PV data
