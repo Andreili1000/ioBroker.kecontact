@@ -38,8 +38,6 @@ const chargeTextMax       = {'en': 'max. charging power', 'de': 'volle Ladeleist
 const prowl_application = adapter.namespace;
 const prowl_url         = "http://prowl.weks.net/publicapi/add?apikey="
 
-//var session_Settings
-var session_log         = '/home/pi/keba/session.csv';
 
 //var photovoltaics_Settings
 var phaseCount          = 0;      // Number of phaes vehicle is charging
@@ -310,50 +308,43 @@ function start() {
       // execute only on transition to TRUE
       if (newValue){
         adapter.log.info('append session dataset to logfile');
-        fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
-                                                   getStateInternal("session.currentHardware") + ' , ' +
-                                                   getStateInternal("session.estart") + ' , ' +
-                                                   getStateInternal("session.ePres") + ' , ' +
-                                                   getStateInternal("session.start") + ' , ' +
-                                                   getStateInternal("session.end") + ' , ' +
-                                                   getStateInternal("session.starttime") + ' , ' +
-                                                   getStateInternal("session.endtime") + ' , ' +
-                                                   getStateInternal("session.reason") + ' , ' +
-                                                   getStateInternal("session.timeq") + ' , ' +
-                                                   getStateInternal("session.rfidtag") + ' , ' +
-                                                   getStateInternal("session.rfidclass") + '\n',
-        function (err) {
-          if (err) throw err;
-        });
-      setStateAck("session.log",false);
+        sessionAppendLog(session_logfile);
+        setStateAck("session.log",false);
       };
-
     };
+
+    //
+    // clears logfile on host
+    //
+    stateChangeListeners[adapter.namespace + '.session.clearlog'] = function (oldValue, newValue) {
+      // execute only on transition to TRUE
+      if (newValue){
+        adapter.log.info('clear logfile');
+        sessionClearLog(session_logfile);
+        setStateAck("session.clearlog",false);
+      };
+    };
+
+
     //
     // RFID commands
     //
     stateChangeListeners[adapter.namespace + '.rfid.unlock'] = function (oldValue, newValue) {
-        // send UDP command only when transition to TRUE
+        // execute only on transition to TRUE
         if (newValue){
           adapter.log.info('unlock wallbox with RFID ' + getStateInternal("rfid.actual"));
           sentProwlMessage(1, "unlock wallbox with RFID " + getStateInternal("rfid.actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid.actual"), true);
-          // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
-          // adapter.setState("rfid_unlock", {val: false, ack: true});
-          // reset unlock request - update status with ACK=true
           setStateAck("rfid.unlock",false);
         };
     };
 
     stateChangeListeners[adapter.namespace + '.rfid.lock'] = function (oldValue, newValue) {
-        // send UDP command only when transition to TRUE
+        // execute only on transition to TRUE
         if (newValue){
           adapter.log.info('lock wallbox with RFID ' + getStateInternal("rfid.actual"));
           sentProwlMessage(1, "lock wallbox with RFID " + getStateInternal("rfid.actual"));
           sendUdpDatagram('stop ' + getStateInternal("rfid.actual"), true);
-          // reset lock request - set acknowledge otherwise non-existant stateChangeListers is called
-          //adapter.setState("rfid.lock", {val: false, ack: true});
-          // reset unlock request - update status with ACK=true
           setStateAck("rfid.lock",false);
         };
     };
@@ -370,11 +361,6 @@ function start() {
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
     };
-
-    //stateChangeListeners[adapter.namespace + '.authreq'] = function (oldValue, newValue) {
-    //  adapter.log.info('oldValue=' + oldValue + ' newValue=' + newValue);
-    //  if (!newValue){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-    //};
 
     //
     // PV commands
@@ -419,12 +405,13 @@ function checkConfig() {
     // use masterkey as default key (commands ack=false)
     adapter.setState("rfid.select", {val: 0, ack: false});
 
+    // initialize session log command
+    adapter.setState("session.log", {val: false, ack: false});
+    adapter.setState("session.logall", {val: false, ack: false});
+    adapter.setState("session.clearlog", {val: false, ack: false});
     // initialize session report log file
-    fs.writeFile('/home/pi/keba/session.csv', 'sessionID, currHW, Estart, Epres, startedS, endedS, started, ended, reason, timeq, RFIDtag, RFIDclass\n', function(err) {
-      // If an error occurred, show it and return
-      if(err) return adapt.log.error(err);
-    // Successfully wrote to the file!
-    });
+    var session_logfile = adapter.config.session_filedir+'/session.csv';
+    sessionClearLog(session_logfile);
 
     // initialize PV data
     if (adapter.config.stateRegard && adapter.config.stateRegard != "") {
@@ -500,6 +487,37 @@ function addForeignState(id) {
 		}
 	});
     return true;
+}
+
+//
+// clears logfile by writing header
+//
+function sessionClearLog(logfile){
+  fs.writeFile(logfile, 'sessionID, currHW, Estart, Epres, startedS, endedS, started, ended, reason, timeq, RFIDtag, RFIDclass\n',
+  function(err) {
+    if(err) return adapt.log.error(err);
+  });
+}
+
+//
+// appends seesion to logfile
+//
+function sessionAppendLog(logfile){
+  fs.appendFile(logfile, getStateInternal("session.sessionID") + ' , ' +
+                         getStateInternal("session.currentHardware") + ' , ' +
+                         getStateInternal("session.estart") + ' , ' +
+                         getStateInternal("session.ePres") + ' , ' +
+                         getStateInternal("session.start") + ' , ' +
+                         getStateInternal("session.end") + ' , ' +
+                         getStateInternal("session.starttime") + ' , ' +
+                         getStateInternal("session.endtime") + ' , ' +
+                         getStateInternal("session.reason") + ' , ' +
+                         getStateInternal("session.timeq") + ' , ' +
+                         getStateInternal("session.rfidtag") + ' , ' +
+                         getStateInternal("session.rfidclass") + '\n',
+  function (err) {
+    if(err) return adapt.log.error(err);
+  });
 }
 
 // sents push message via prowl
