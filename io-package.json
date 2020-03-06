@@ -856,6 +856,48 @@
       "native": {}
     },
     {
+      "_id": "session.log",
+      "type": "state",
+      "common": {
+        "name": "session log request",
+        "type": "boolean",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "def": false,
+        "desc": "saves dataset of current session into log file"
+      },
+      "native": {}
+    },
+    {
+      "_id": "session.logall",
+      "type": "state",
+      "common": {
+        "name": "log request for all sessions",
+        "type": "boolean",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "def": false,
+        "desc": "saves all stored session datasets of in wallbox into log file"
+      },
+      "native": {}
+    },
+    {
+      "_id": "session.clearlog",
+      "type": "state",
+      "common": {
+        "name": "clear logfile",
+        "type": "boolean",
+        "role": "value",
+        "read": true,
+        "write": true,
+        "def": false,
+        "desc": "clears all data in log file"
+      },
+      "native": {}
+    },
+    {
       "_id": "session.sessionID",
       "type": "state",
       "common": {

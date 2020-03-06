@@ -303,11 +303,11 @@ function start() {
       sendUdpDatagram('report ' + newValue, true);
     };
 
-    stateChangeListeners[adapter.namespace + '.session.rfidtag'] = function (oldValue, newValue) {
-      // new session report has been read
-      // because 'session.rfidtag' is the last state change in sequence of the session report
-      // write now result to file
-      adapter.log.info('append session report to file');
+    //
+    // logs current session dataset to logfile on host
+    //
+    stateChangeListeners[adapter.namespace + '.session.log'] = function (oldValue, newValue) {
+      adapter.log.info('append session dataset to logfile');
       fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
                                                  getStateInternal("session.currentHardware") + ' , ' +
                                                  getStateInternal("session.estart") + ' , ' +
