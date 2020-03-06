@@ -305,7 +305,7 @@ function start() {
 
     stateChangeListeners[adapter.namespace + '.session.rfidtag'] = function (oldValue, newValue) {
       // new session report has been read
-      // because 'session_rfidtag' is the last state change in sequence of the session report
+      // because 'session.rfidtag' is the last state change in sequence of the session report
       // write now result to file
       adapter.log.info('append session report to file');
       fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
@@ -328,41 +328,41 @@ function start() {
     //
     // RFID commands
     //
-    stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
+    stateChangeListeners[adapter.namespace + '.rfid.unlock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
-          adapter.log.info('unlock wallbox with RFID ' + getStateInternal("rfid_actual"));
-          sentProwlMessage(1, "unlock wallbox with RFID " + getStateInternal("rfid_actual"));
-          sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
+          adapter.log.info('unlock wallbox with RFID ' + getStateInternal("rfid.actual"));
+          sentProwlMessage(1, "unlock wallbox with RFID " + getStateInternal("rfid.actual"));
+          sendUdpDatagram('start ' + getStateInternal("rfid.actual"), true);
           // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
           // adapter.setState("rfid_unlock", {val: false, ack: true});
           // reset unlock request - update status with ACK=true
-          setStateAck("rfid_unlock",false);
+          setStateAck("rfid.unlock",false);
         };
     };
 
-    stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
+    stateChangeListeners[adapter.namespace + '.rfid.lock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
-          adapter.log.info('lock wallbox with RFID ' + getStateInternal("rfid_actual"));
-          sentProwlMessage(1, "lock wallbox with RFID " + getStateInternal("rfid_actual"));
-          sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
+          adapter.log.info('lock wallbox with RFID ' + getStateInternal("rfid.actual"));
+          sentProwlMessage(1, "lock wallbox with RFID " + getStateInternal("rfid.actual"));
+          sendUdpDatagram('stop ' + getStateInternal("rfid.actual"), true);
           // reset lock request - set acknowledge otherwise non-existant stateChangeListers is called
-          //adapter.setState("rfid_lock", {val: false, ack: true});
+          //adapter.setState("rfid.lock", {val: false, ack: true});
           // reset unlock request - update status with ACK=true
-          setStateAck("rfid_lock",false);
+          setStateAck("rfid.lock",false);
         };
     };
 
-    stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
-        adapter.log.info('rfid_select ' + newValue);
+    stateChangeListeners[adapter.namespace + '.rfid.select'] = function (oldValue, newValue) {
+        adapter.log.info('rfid.select ' + newValue);
         // assign selected RFID
         switch (newValue){
-          case 0: adapter.setState("rfid_actual", {val: getStateInternal("rfid_master"), ack: true}); break;
-          case 1: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user1"), ack: true}); break;
-          case 2: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user2"), ack: true}); break;
-          case 3: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user3"), ack: true}); break;
-          case 4: adapter.setState("rfid_actual", {val: getStateInternal("rfid_user4"), ack: true}); break;
+          case 0: adapter.setState("rfid.actual", {val: getStateInternal("rfid.master"), ack: true}); break;
+          case 1: adapter.setState("rfid.actual", {val: getStateInternal("rfid.user1"), ack: true}); break;
+          case 2: adapter.setState("rfid.actual", {val: getStateInternal("rfid.user2"), ack: true}); break;
+          case 3: adapter.setState("rfid.actual", {val: getStateInternal("rfid.user3"), ack: true}); break;
+          case 4: adapter.setState("rfid.actual", {val: getStateInternal("rfid.user4"), ack: true}); break;
           default: adapter.log.warn('rfid whitelist entry ' + newValue + ' is undefined.');
         };
     };
@@ -403,17 +403,17 @@ function checkConfig() {
 
 
     // copy RFID whitelist to Adapter States (status: ack=true)
-    adapter.setState("rfid_master", {val: adapter.config.rfid_master, ack: true});
-    adapter.setState("rfid_user1",  {val: adapter.config.user1, ack: true});
-    adapter.setState("rfid_user2",  {val: adapter.config.user2, ack: true});
-    adapter.setState("rfid_user3",  {val: adapter.config.user3, ack: true});
-    adapter.setState("rfid_user4",  {val: adapter.config.user4, ack: true});
+    adapter.setState("rfid.master", {val: adapter.config.rfid_master, ack: true});
+    adapter.setState("rfid.user1",  {val: adapter.config.user1, ack: true});
+    adapter.setState("rfid.user2",  {val: adapter.config.user2, ack: true});
+    adapter.setState("rfid.user3",  {val: adapter.config.user3, ack: true});
+    adapter.setState("rfid.user4",  {val: adapter.config.user4, ack: true});
 
     // initialize RFID lock/unlock requestReports (commands: ack=false)
-    adapter.setState("rfid_unlock", {val: false, ack: false});
-    adapter.setState("rfid_lock",   {val: false, ack: false});
+    adapter.setState("rfid.unlock", {val: false, ack: false});
+    adapter.setState("rfid.lock",   {val: false, ack: false});
     // use masterkey as default key (commands ack=false)
-    adapter.setState("rfid_select", {val: 0, ack: false});
+    adapter.setState("rfid.select", {val: 0, ack: false});
 
     // initialize session report log file
     fs.writeFile('/home/pi/keba/session.csv', 'sessionID, currHW, Estart, Epres, startedS, endedS, started, ended, reason, timeq, RFIDtag, RFIDclass\n', function(err) {

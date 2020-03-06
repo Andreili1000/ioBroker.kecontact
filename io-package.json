@@ -592,7 +592,15 @@
       }
     },
     {
-      "_id": "rfid_unlock",
+      "_id": "rfid",
+      "type": "channel",
+      "common": {
+        "name": "RFID Card Handling"
+      },
+      "native": {}
+    },
+    {
+      "_id": "rfid.unlock",
       "type": "state",
       "common": {
         "name": "send request to unlock wallbow with rfid",
@@ -606,7 +614,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_lock",
+      "_id": "rfid.lock",
       "type": "state",
       "common": {
         "name": "send request to lock wallbow with rfid",
@@ -620,7 +628,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_select",
+      "_id": "rfid.select",
       "type": "state",
       "common": {
         "name": "select rfid card out of whitelist",
@@ -634,7 +642,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_actual",
+      "_id": "rfid.actual",
       "type": "state",
       "common": {
         "name": "actual RFID",
@@ -647,7 +655,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_master",
+      "_id": "rfid.master",
       "type": "state",
       "common": {
         "name": "RFID Tag Master (whitelist 0)",
@@ -660,7 +668,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_user1",
+      "_id": "rfid.user1",
       "type": "state",
       "common": {
         "name": "RFID Tag User1 (whitelist 1)",
@@ -673,7 +681,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_user2",
+      "_id": "rfid.user2",
       "type": "state",
       "common": {
         "name": "RFID Tag User2 (whitelist 2)",
@@ -686,7 +694,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_user3",
+      "_id": "rfid.user3",
       "type": "state",
       "common": {
         "name": "RFID Tag User3 (whitelist 3)",
@@ -699,7 +707,7 @@
       "native": {}
     },
     {
-      "_id": "rfid_user4",
+      "_id": "rfid.user4",
       "type": "state",
       "common": {
         "name": "RFID Tag User4 (whitelist 4)",
