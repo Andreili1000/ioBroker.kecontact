@@ -840,7 +840,15 @@
       "native": {}
     },
     {
-      "_id": "session_sessionID",
+      "_id": "session",
+      "type": "channel",
+      "common": {
+        "name": "information about selected charging session"
+      },
+      "native": {}
+    },
+    {
+      "_id": "session.sessionID",
       "type": "state",
       "common": {
         "name": "ID of the charging session",
@@ -853,7 +861,7 @@
       "native": {"udpKey": "Session ID"}
     },
     {
-      "_id": "session_currentHardware",
+      "_id": "session.currentHardware",
       "type": "state",
       "common": {
         "name": "Maximum Current Hardware in session",
@@ -869,7 +877,7 @@
       }
     },
     {
-      "_id": "session_estart",
+      "_id": "session.estart",
       "type": "state",
       "common": {
         "name": "Energy at session start",
@@ -882,7 +890,7 @@
       "native": {"udpKey": "E start"}
     },
     {
-      "_id": "session_ePres",
+      "_id": "session.ePres",
       "type": "state",
       "common": {
         "name": "Power Consumption in this session",
@@ -899,7 +907,7 @@
       }
     },
     {
-      "_id": "session_starttime",
+      "_id": "session.starttime",
       "type": "state",
       "common": {
         "name": "session start time",
@@ -912,7 +920,7 @@
       "native": {"udpKey": "started[s]"}
     },
     {
-      "_id": "session_endtime",
+      "_id": "session.endtime",
       "type": "state",
       "common": {
         "name": "session end time",
@@ -925,7 +933,7 @@
       "native": {"udpKey": "ended[s]"}
     },
     {
-      "_id": "session_start",
+      "_id": "session.start",
       "type": "state",
       "common": {
         "name": "timestamp of session start",
@@ -938,7 +946,7 @@
       "native": {"udpKey": "started"}
     },
     {
-      "_id": "session_end",
+      "_id": "session.end",
       "type": "state",
       "common": {
         "name": "timestamp of session end",
@@ -951,7 +959,7 @@
       "native": {"udpKey": "ended"}
     },
     {
-      "_id": "session_reason",
+      "_id": "session.reason",
       "type": "state",
       "common": {
         "name": "reason for session end",
@@ -964,7 +972,7 @@
       "native": {"udpKey": "reason"}
     },
     {
-      "_id": "session_timeq",
+      "_id": "session.timeq",
       "type": "state",
       "common": {
         "name": "quality of time signal",
@@ -977,20 +985,20 @@
       "native": {"udpKey": "timeQ"}
     },
     {
-      "_id": "session_rfidtag",
+      "_id": "session.rfidtag",
       "type": "state",
       "common": {
         "name": "RFID tag for session",
         "type": "string",
         "role": "value",
         "read": true,
-        "write": true,
+        "write": false,
         "desc": "RFID tag used for authorizing session"
       },
       "native": {"udpKey": "RFID tag"}
     },
     {
-      "_id": "session_rfidclass",
+      "_id": "session.rfidclass",
       "type": "state",
       "common": {
         "name": "class of RFID card for session",

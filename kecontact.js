@@ -25,8 +25,8 @@ var rxSocketBrodacast;
 var pollTimer;
 var sendDelayTimer;
 var states = {};                 // contains all state objects of adapter
-var stateChangeListeners = {};
-var currentStateValues = {};     // contains all actual state values of all states
+var stateChangeListeners = {};   // commands of the adapter
+var currentStateValues = {};     // contains a copy of all actual state values of all states
 var sendQueue = [];
 
 //var ioBroker_Settings
@@ -113,46 +113,64 @@ adapter.on('unload', function (callback) {
     callback();
 });
 
-// is called if a subscribed state changes
+//
+// is called if any subscribed state changes
+//
 adapter.on('stateChange', function (id, state) {
     // Warning: state can be null if it was deleted!
     if (!id || !state) {
     	return;
     }
-    adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
-    // save state changes of foreign adapters - this is done even if value has not changed but acknowledged
 
+    adapter.log.debug('stateChange ' + id + ' ' + JSON.stringify(state));
+
+    //
+    // execute activities due to a state change of this adapter
+    // regardless whether state (ACK=true) or command (ACK=FALSE)
+    //
     if (id.startsWith(adapter.namespace + '.')) {
+
     	// if vehicle is (un)plugged check if schedule has to be disabled/enabled
-    	if (id == adapter.namespace + '.' + stateWallboxPlug) {
+      //if (id == adapter.namespace + '.' + stateWallboxPlug) {
     		// call only if value has changed
-    		if (state.val != getStateInternal(id))
-    			setTimeout(checkWallboxPower, 3000);  // wait 3 seconds after vehicle is plugged
-    	}
+    		//if (state.val != getStateInternal(id))
+    			//setTimeout(checkWallboxPower, 3000);  // wait 3 seconds after vehicle is plugged
+    	//}
+
+      // call only if value has changed
+      if (state.val != getStateInternal(id)){
+        switch (id){
+          //
+          // push message on unlocking / locking of wallbox
+          //
+          case adapter.namespace + '.authreq':
+            //adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
+            if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+            break;
+          //
+          // if vehicle is (un)plugged check if schedule has to be disabled/enabled
+          //
+          case adapter.namespace + '.' + stateWallboxPlug:
+            setTimeout(checkWallboxPower, 3000);  // wait 3 seconds after vehicle is plugged
+            break;
+        }
+      }
+
     }
 
-    // copy state change also in StateInternal
+    //
+    // Update local copy in currentStateValues and oldValue with state change
+    //
     var oldValue = getStateInternal(id);
     setStateInternal(id, state.val);
 
-    //
-    // check whether statechange needs a push message (only if state has changed)
-    //
-    if (oldValue!=state.val){
-      switch (id){
-        case adapter.namespace + '.authreq':
-          //adapter.log.info('statechange on authreq: oldValue=' + oldValue + ' newValue=' + state.val);
-          if (!state.val){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-          break;
-      }
-    }
-
-    // ACK=true  -> state is status only, no further processing necessary
-    // ACK=false -> state is command and needs proecessing by stateChangeListeners
+    // check wheter state change is a command (ACK=false) or a status (ACK=TRUE)
+    // if status then exit without further command processing
     if (state.ack) {
       return;
     }
 
+    // if command then proceed with command execution
     // check whether command function has been defined, i.e. id exisits in function array
     if (!stateChangeListeners.hasOwnProperty(id)) {
         adapter.log.error('Unsupported state change: ' + id);
@@ -249,55 +267,66 @@ function main() {
 function start() {
     adapter.subscribeStates('*');
 
-    // stateChangeListers is an array of functions.
-    // Each single function is called when state [id] changes.
-    // Each single function is called with "old value" and "new value" of state [id] as parameters
+    //
+    // Adapter Commands - Execution
+    //
+    // - all commands are defined in the function array 'stateChangeListener'
+    // - each array element is indexed by the state name which shall trigger the command
+    // - function is only called of the linked state is changed with ACK=false, i.e. marked as command
+    // - ACK=false is set by vis, javascript-adapter or admin
+    // - parameters of the function are "old value" and "new value" of the triggering state
 
     stateChangeListeners[adapter.namespace + '.enableUser'] = function (oldValue, newValue) {
         sendUdpDatagram('ena ' + (newValue ? 1 : 0), true);
     };
+
     stateChangeListeners[adapter.namespace + '.currentUser'] = function (oldValue, newValue) {
         sendUdpDatagram('curr ' + parseInt(newValue), true);
     };
+
     stateChangeListeners[adapter.namespace + '.output'] = function (oldValue, newValue) {
         sendUdpDatagram('output ' + (newValue ? 1 : 0), true);
     };
+
     stateChangeListeners[adapter.namespace + '.display'] = function (oldValue, newValue) {
         adapter.log.info('display ' + newValue.replace(/ /g, "$"));
         sendUdpDatagram('display 0 0 0 0 ' + newValue.replace(/ /g, "$"), true);
         // clear display variable after 10s as display on wallbox itself
         setTimeout(function() {
-          adapter.setState("display", {val: "", ack: true});
+          //adapter.setState("display", {val: "", ack: true});
+          setStateAck("display","");
         }, 10000);
     };
+
     stateChangeListeners[adapter.namespace + '.requestReportID'] = function (oldValue, newValue) {
       adapter.log.info('request report ' + newValue + ' from wallbox');
       sendUdpDatagram('report ' + newValue, true);
     };
-    stateChangeListeners[adapter.namespace + '.session_rfidtag'] = function (oldValue, newValue) {
+
+    stateChangeListeners[adapter.namespace + '.session.rfidtag'] = function (oldValue, newValue) {
       // new session report has been read
       // because 'session_rfidtag' is the last state change in sequence of the session report
       // write now result to file
       adapter.log.info('append session report to file');
-      fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session_sessionID") + ' , ' +
-                                                 getStateInternal("session_currentHardware") + ' , ' +
-                                                 getStateInternal("session_estart") + ' , ' +
-                                                 getStateInternal("session_ePres") + ' , ' +
-                                                 getStateInternal("session_estart") + ' , ' +
-                                                 getStateInternal("session_end") + ' , ' +
-                                                 getStateInternal("session_starttime") + ' , ' +
-                                                 getStateInternal("session_endtime") + ' , ' +
-                                                 getStateInternal("session_reason") + ' , ' +
-                                                 getStateInternal("session_timeq") + ' , ' +
-                                                 getStateInternal("session_rfidtag") + ' , ' +
-                                                 getStateInternal("session_rfidclass") + '\n',
+      fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
+                                                 getStateInternal("session.currentHardware") + ' , ' +
+                                                 getStateInternal("session.estart") + ' , ' +
+                                                 getStateInternal("session.ePres") + ' , ' +
+                                                 getStateInternal("session.estart") + ' , ' +
+                                                 getStateInternal("session.end") + ' , ' +
+                                                 getStateInternal("session.starttime") + ' , ' +
+                                                 getStateInternal("session.endtime") + ' , ' +
+                                                 getStateInternal("session.reason") + ' , ' +
+                                                 getStateInternal("session.timeq") + ' , ' +
+                                                 getStateInternal("session.rfidtag") + ' , ' +
+                                                 getStateInternal("session.rfidclass") + '\n',
         function (err) {
           if (err) throw err;
        });
     };
 
     //
-    // handle RFID commands
+    // RFID commands
     //
     stateChangeListeners[adapter.namespace + '.rfid_unlock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
@@ -306,9 +335,12 @@ function start() {
           sentProwlMessage(1, "unlock wallbox with RFID " + getStateInternal("rfid_actual"));
           sendUdpDatagram('start ' + getStateInternal("rfid_actual"), true);
           // reset unlock request - set acknowledge otherwise non-existant stateChangeListers is called
-          adapter.setState("rfid_unlock", {val: false, ack: true});
+          // adapter.setState("rfid_unlock", {val: false, ack: true});
+          // reset unlock request - update status with ACK=true
+          setStateAck("rfid_unlock",false);
         };
     };
+
     stateChangeListeners[adapter.namespace + '.rfid_lock'] = function (oldValue, newValue) {
         // send UDP command only when transition to TRUE
         if (newValue){
@@ -316,9 +348,12 @@ function start() {
           sentProwlMessage(1, "lock wallbox with RFID " + getStateInternal("rfid_actual"));
           sendUdpDatagram('stop ' + getStateInternal("rfid_actual"), true);
           // reset lock request - set acknowledge otherwise non-existant stateChangeListers is called
-          adapter.setState("rfid_lock", {val: false, ack: true});
+          //adapter.setState("rfid_lock", {val: false, ack: true});
+          // reset unlock request - update status with ACK=true
+          setStateAck("rfid_lock",false);
         };
     };
+
     stateChangeListeners[adapter.namespace + '.rfid_select'] = function (oldValue, newValue) {
         adapter.log.info('rfid_select ' + newValue);
         // assign selected RFID
@@ -332,18 +367,19 @@ function start() {
         };
     };
 
-    stateChangeListeners[adapter.namespace + '.authreq'] = function (oldValue, newValue) {
-      adapter.log.info('oldValue=' + oldValue + ' newValue=' + newValue);
-      if (!newValue){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
-    };
+    //stateChangeListeners[adapter.namespace + '.authreq'] = function (oldValue, newValue) {
+    //  adapter.log.info('oldValue=' + oldValue + ' newValue=' + newValue);
+    //  if (!newValue){sentProwlMessage(1,"wallbox unlocked");} else {sentProwlMessage(1,"wallbox locked");};
+    //};
 
     //
-    // handle Wallbox control via PV
+    // PV commands
     //
     stateChangeListeners[adapter.namespace + '.' + stateWallboxDisabled] = function (oldValue, newValue) {
         adapter.log.info('change pause status of wallbox from ' + oldValue + ' to ' + newValue);
       	checkWallboxPower();
     };
+
     stateChangeListeners[adapter.namespace + '.' + statePvAutomatic] = function (oldValue, newValue) {
         adapter.log.info('change of photovoltaics automatic from ' + oldValue + ' to ' + newValue);
         if (oldValue != newValue)
@@ -827,6 +863,9 @@ function sendNextQueueDatagram() {
     }
 }
 
+//
+// reads copy of current value of object with ID=id
+//
 function getStateInternal(id) {
 	var obj = id;
 	if (! obj.startsWith(adapter.namespace + '.'))
@@ -834,6 +873,10 @@ function getStateInternal(id) {
 	return currentStateValues[obj];
 }
 
+//
+// reads copy of current value of object with ID=id
+// if not existent, then return 0 by default
+//
 function getStateDefault0(id) {
 	var value = getStateInternal(id);
 	if (value)
