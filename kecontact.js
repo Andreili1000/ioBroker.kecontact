@@ -307,24 +307,28 @@ function start() {
     // logs current session dataset to logfile on host
     //
     stateChangeListeners[adapter.namespace + '.session.log'] = function (oldValue, newValue) {
-      adapter.log.info('append session dataset to logfile');
-      fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
-                                                 getStateInternal("session.currentHardware") + ' , ' +
-                                                 getStateInternal("session.estart") + ' , ' +
-                                                 getStateInternal("session.ePres") + ' , ' +
-                                                 getStateInternal("session.estart") + ' , ' +
-                                                 getStateInternal("session.end") + ' , ' +
-                                                 getStateInternal("session.starttime") + ' , ' +
-                                                 getStateInternal("session.endtime") + ' , ' +
-                                                 getStateInternal("session.reason") + ' , ' +
-                                                 getStateInternal("session.timeq") + ' , ' +
-                                                 getStateInternal("session.rfidtag") + ' , ' +
-                                                 getStateInternal("session.rfidclass") + '\n',
+      // execute only on transition to TRUE
+      if (newValue){
+        adapter.log.info('append session dataset to logfile');
+        fs.appendFile('/home/pi/keba/session.csv', getStateInternal("session.sessionID") + ' , ' +
+                                                   getStateInternal("session.currentHardware") + ' , ' +
+                                                   getStateInternal("session.estart") + ' , ' +
+                                                   getStateInternal("session.ePres") + ' , ' +
+                                                   getStateInternal("session.start") + ' , ' +
+                                                   getStateInternal("session.end") + ' , ' +
+                                                   getStateInternal("session.starttime") + ' , ' +
+                                                   getStateInternal("session.endtime") + ' , ' +
+                                                   getStateInternal("session.reason") + ' , ' +
+                                                   getStateInternal("session.timeq") + ' , ' +
+                                                   getStateInternal("session.rfidtag") + ' , ' +
+                                                   getStateInternal("session.rfidclass") + '\n',
         function (err) {
           if (err) throw err;
-       });
-    };
+        });
+      setStateAck("session.log",false);
+      };
 
+    };
     //
     // RFID commands
     //
